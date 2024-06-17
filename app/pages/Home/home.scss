@@ -1,0 +1,45 @@
+.home_actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+    
+    h2 {
+        font-size: 2.5em;
+        font-weight: 700;
+        margin: 0.7em 0 0.2em 0;
+    }
+
+    p {
+        color: gray;
+    }
+
+    section {
+        align-items: center;
+        flex-direction: row;
+        display: flex;           /* make this a flex container so it has flex properties */
+        justify-content: center; /* to horizontally center them in this flex display */
+        gap: 2em;
+        flex-wrap: wrap;
+        padding: 2em;
+        
+        img {
+            width: 3em;
+        }
+
+        .home_action_comp {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 2em;
+            background-color: #f6faff;
+            border-radius: 5px;
+            gap: 2em;
+            align-self: stretch;
+
+        }    
+    }
+
+
+}

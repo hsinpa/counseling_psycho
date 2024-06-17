@@ -1,0 +1,19 @@
+@use '../../share_styles/variable.scss' as v;
+
+#header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    padding: 1.5em 0em;
+    background-color: v.$color_blue;
+    
+    h1 {
+        color: white;
+        font-size: 2.5em;
+        font-weight: 700;
+        span {
+            color: #031b4e; 
+        }
+    }
+}

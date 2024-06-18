@@ -1,0 +1,38 @@
+.short_theory_form {
+    h2 {
+        padding-top: 1em;
+    }
+
+    section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1em;
+    }
+}
+
+.long_theory_form {
+    padding: 1em 0em;
+    h3 {
+        color: gray;
+    }
+
+    .arrow_group {
+        display: flex;
+        align-items: center;
+        justify-content: center; /* to horizontally center them in this flex display */
+        gap: 2em;
+        padding-bottom: 1.5em;
+
+        img {
+            width: 3em;
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    progress {
+        --bulma-progress-value-background-color: #3368c6;
+    }
+}

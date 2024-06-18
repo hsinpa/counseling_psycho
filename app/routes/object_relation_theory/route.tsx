@@ -1,5 +1,5 @@
 import { MetaFunction } from "@remix-run/react";
-import { TheoryContainerView } from "~/pages/questionaries/object_relation_theory_comp";
+import { TheoryContainerView } from "~/pages/questionnaires/object_relation_theory_comp";
 import Header_View from "~/pages/layout/header";
 
 export const meta: MetaFunction = () => {

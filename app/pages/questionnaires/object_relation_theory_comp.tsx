@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import './questionarie.scss'
-import { Questionaries } from '~/utility/static_text'
+import { QuestionaireFormTemplate, Questionaries } from '~/utility/static_text'
 import left_arrow_img from '~/assets/UI/left-arrow.png';
 import right_arrow_img from '~/assets/UI/right-arrow.png';
 import { clamp } from '~/utility/utility_method';
+import { ObjectRelationTheoryType } from './questionnaire_type';
+import { useNavigate } from '@remix-run/react';
+import { API, GetDomain } from '~/utility/api_static';
 
-export let TheoryContainerView = function() {
+export let TheoryContainerView = function({theory}: {theory: ObjectRelationTheoryType[]}) {
     return (<div className="container">
         {RenderShortTheoryForm()}
-        {RenderLongTheoryForm()}
+        {RenderLongTheoryForm(theory)}
     </div>)
 }
 
@@ -47,12 +50,20 @@ let RenderShortTheoryForm = function() {
     </div>)
 }
 
-export let RenderLongTheoryForm = function() {
+export let RenderLongTheoryForm = function(theory: ObjectRelationTheoryType[]) {
+    const navigate = useNavigate();
+
     let [progress, setProgress] = useState<number>(0);
     let [question_index, set_question_index] = useState<number>(0);
     let [answers, set_answers] = useState<string[]>(Array(Questionaries.length).fill(""));
 
-    let question = Questionaries[question_index];
+    let question = "";
+    let theory_type : ObjectRelationTheoryType | null = null;
+
+    if (theory !=null && question_index < theory.length) {
+        question = theory[question_index].question;
+        theory_type = theory[question_index];
+    }
 
     let on_arrow_click = function(direction: number) {
         let new_index = clamp(question_index + direction, 0, Questionaries.length - 1);
@@ -67,6 +78,38 @@ export let RenderLongTheoryForm = function() {
 
         clone_answer[question_index] = newValue;
         set_answers(clone_answer);
+    }
+
+    let on_submit_button = async function() {
+        let button: HTMLButtonElement | null = document.querySelector<HTMLButtonElement>('.long_theory_form button');
+        let data = {...QuestionaireFormTemplate};
+            data.question_answer_pairs = [];
+
+        for (let i = 0; i < answers.length; i++) {
+            theory[i].question_id
+            data.question_answer_pairs.push({
+                question_id: theory[i].question_id,
+                question: theory[i].question,
+                question_order: theory[i].order,
+                answer: answers[i],
+            });
+        } 
+
+        if (button == null) return;
+
+        button.disabled = true;
+        try {
+            let request = await fetch(location.href, {method:'POST', headers: {"Content-Type": "application/json"}
+            , body: JSON.stringify(data)});
+
+            let json_data = await request.json();
+
+
+            console.log(json_data);
+        } catch{
+            button.disabled = false;
+            return;
+        }
     }
 
     return(
@@ -86,7 +129,7 @@ export let RenderLongTheoryForm = function() {
                 <img onClick={ () => on_arrow_click(1)} src={right_arrow_img}></img>
             </div>
 
-            <button className='button is-fullwidth is-info is-light'>取得個案分析報告</button>
+            <button className='button is-fullwidth is-info is-light' onClick={on_submit_button}>取得個案分析報告</button>
         </div>
     )
 }

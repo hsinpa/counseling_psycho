@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './questionarie.scss'
 import { QuestionaireFormTemplate, Questionaries } from '~/utility/static_text'
 import left_arrow_img from '~/assets/UI/left-arrow.png';
 import right_arrow_img from '~/assets/UI/right-arrow.png';
 import { clamp } from '~/utility/utility_method';
 import { ObjectRelationTheoryType } from './questionnaire_type';
-import { useNavigate } from '@remix-run/react';
+import { useFetcher, useNavigate } from '@remix-run/react';
 import { API, GetDomain } from '~/utility/api_static';
 
 export let TheoryContainerView = function({theory}: {theory: ObjectRelationTheoryType[]}) {
@@ -52,6 +52,7 @@ let RenderShortTheoryForm = function() {
 
 export let RenderLongTheoryForm = function(theory: ObjectRelationTheoryType[]) {
     const navigate = useNavigate();
+    const fetcher = useFetcher({ key: "add-to-bag" });
 
     let [progress, setProgress] = useState<number>(0);
     let [question_index, set_question_index] = useState<number>(0);
@@ -64,6 +65,10 @@ export let RenderLongTheoryForm = function(theory: ObjectRelationTheoryType[]) {
         question = theory[question_index].question;
         theory_type = theory[question_index];
     }
+
+    useEffect(() => {
+        console.log(fetcher)
+    }, [fetcher])
 
     let on_arrow_click = function(direction: number) {
         let new_index = clamp(question_index + direction, 0, Questionaries.length - 1);
@@ -81,6 +86,7 @@ export let RenderLongTheoryForm = function(theory: ObjectRelationTheoryType[]) {
     }
 
     let on_submit_button = async function() {
+        const formData = new FormData();
         let button: HTMLButtonElement | null = document.querySelector<HTMLButtonElement>('.long_theory_form button');
         let data = {...QuestionaireFormTemplate};
             data.question_answer_pairs = [];
@@ -99,13 +105,22 @@ export let RenderLongTheoryForm = function(theory: ObjectRelationTheoryType[]) {
 
         button.disabled = true;
         try {
-            let request = await fetch(location.href, {method:'POST', headers: {"Content-Type": "application/json"}
-            , body: JSON.stringify(data)});
+            fetcher.formAction = location.href;
+            fetcher.submit(
+                data,
+                {
+                  method: "POST",
+                  encType: "application/json",
+                }
+              );
+              
+            // let request = await fetch(location.href, {method:'POST', headers: {"Content-Type": "application/json"}
+            // , body: JSON.stringify(data)});
 
-            let json_data = await request.json();
+            // let json_data = await request.json();
 
 
-            console.log(json_data);
+            // console.log(json_data);
         } catch{
             button.disabled = false;
             return;

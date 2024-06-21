@@ -1,4 +1,4 @@
-import { MetaFunction} from "@remix-run/react";
+import { MetaFunction, useNavigation} from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
     return [
@@ -8,6 +8,10 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Analysis_Report_Page() {
+    let navigation = useNavigation();
+
+    console.log('navigation.state', navigation.state);
+
     return (
     <div>
         Analysis Report

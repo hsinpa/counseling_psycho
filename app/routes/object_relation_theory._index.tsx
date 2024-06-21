@@ -1,8 +1,8 @@
-import { MetaFunction, json, useActionData, useLoaderData } from "@remix-run/react";
+import { MetaFunction, useActionData, useLoaderData, useNavigate } from "@remix-run/react";
 import { TheoryContainerView } from "~/pages/questionnaires/object_relation_theory_comp";
 import Header_View from "~/pages/layout/header";
 import { API, GetDomain } from "~/utility/api_static";
-import { ActionFunctionArgs } from "@remix-run/node";
+import { ActionFunctionArgs, json } from "@remix-run/node";
 import { useEffect } from "react";
 
 export const meta: MetaFunction = () => {
@@ -20,19 +20,30 @@ export const meta: MetaFunction = () => {
   
   export const action = async ({request}: ActionFunctionArgs) => {
     let json = await request.json();
+    console.log(json)
 
     let fetch_result = await fetch(GetDomain(API.UploadUserQuestionnaire), 
                                 {method:'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(json)});
-    let json_result = await fetch_result.json();
 
-    return JSON.stringify(json_result);
+    return (await fetch_result.json());
   }
 
   export default function Object_Relation_Theory_Page() {
     const theories = useLoaderData<typeof loader>();
+    const navigate = useNavigate();
     const analysis_report = useActionData<typeof action>();
 
-    console.log(analysis_report)
+    useEffect(() => {
+      console.log(analysis_report)
+
+      if (analysis_report != undefined) {
+        navigate("/object_relation_theory/analysis_report", {
+          replace: true,
+          relative: "route",
+          state: analysis_report,
+        });
+      }
+    }, [analysis_report])
 
     return (
         <div className="object_relation_theory">

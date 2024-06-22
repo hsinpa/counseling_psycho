@@ -36,3 +36,32 @@
         --bulma-progress-value-background-color: #3368c6;
     }
 }
+
+.theory_report {
+    padding: 1em 0em;
+    .report_title {
+        display: flex;
+        align-items: center;
+        justify-content: center; /* to horizontally center them in this flex display */
+        flex-direction: column;
+        padding: 2em 0;
+        gap: 1em;        
+        h2 {
+            margin: 0 auto;
+        }
+        p {color: gray;}
+    }
+    
+    pre {
+        font-size: 1em;
+        white-space: pre-wrap;       /* css-3 */
+        white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+        white-space: -pre-wrap;      /* Opera 4-6 */
+        white-space: -o-pre-wrap;    /* Opera 7 */
+        word-wrap: break-word;       /* Internet Explorer 5.5+ */       
+    }
+
+    button {
+        margin-top: 1em;
+    }
+}

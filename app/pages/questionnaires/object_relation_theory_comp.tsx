@@ -68,6 +68,14 @@ export let RenderLongTheoryForm = function(theory: ObjectRelationTheoryType[]) {
 
     useEffect(() => {
         console.log(fetcher)
+        if (fetcher.state == 'loading' && fetcher.data != null) {
+
+            navigate("/object_relation_theory/analysis_report", {
+                replace: false,
+                relative: "route",
+                state: fetcher.data,
+            });
+        }
     }, [fetcher])
 
     let on_arrow_click = function(direction: number) {
@@ -86,7 +94,6 @@ export let RenderLongTheoryForm = function(theory: ObjectRelationTheoryType[]) {
     }
 
     let on_submit_button = async function() {
-        const formData = new FormData();
         let button: HTMLButtonElement | null = document.querySelector<HTMLButtonElement>('.long_theory_form button');
         let data = {...QuestionaireFormTemplate};
             data.question_answer_pairs = [];
@@ -113,14 +120,6 @@ export let RenderLongTheoryForm = function(theory: ObjectRelationTheoryType[]) {
                   encType: "application/json",
                 }
               );
-              
-            // let request = await fetch(location.href, {method:'POST', headers: {"Content-Type": "application/json"}
-            // , body: JSON.stringify(data)});
-
-            // let json_data = await request.json();
-
-
-            // console.log(json_data);
         } catch{
             button.disabled = false;
             return;

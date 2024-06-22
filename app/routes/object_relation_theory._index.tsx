@@ -30,20 +30,6 @@ export const meta: MetaFunction = () => {
 
   export default function Object_Relation_Theory_Page() {
     const theories = useLoaderData<typeof loader>();
-    const navigate = useNavigate();
-    const analysis_report = useActionData<typeof action>();
-
-    useEffect(() => {
-      console.log(analysis_report)
-
-      if (analysis_report != undefined) {
-        navigate("/object_relation_theory/analysis_report", {
-          replace: true,
-          relative: "route",
-          state: analysis_report,
-        });
-      }
-    }, [analysis_report])
 
     return (
         <div className="object_relation_theory">

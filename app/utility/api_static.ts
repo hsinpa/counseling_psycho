@@ -4,6 +4,7 @@ const Self = '/'
 export const API = Object.freeze({
     'GetObjectRelationsTheory': 'questionnaire/ObjectRelationsTheory',
     'UploadUserQuestionnaire': 'questionnaire/ObjectRelationsTheory',
+    'UploadTheoryReport': 'questionnaire/ObjectRelationsTheory/analysis',
 });
 
 export const GetDomain = function(url: string) {

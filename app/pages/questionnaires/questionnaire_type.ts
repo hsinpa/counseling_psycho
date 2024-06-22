@@ -3,3 +3,8 @@ export interface ObjectRelationTheoryType {
     question: string,
     question_id: string
 }
+
+export interface TheoryReportType {
+    content: string,
+    role: string
+}

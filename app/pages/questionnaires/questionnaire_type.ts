@@ -1,7 +1,6 @@
 export interface ObjectRelationTheoryType {
-    order: number,
-    question: string,
-    question_id: string
+    content: string,
+    id: string
 }
 
 export interface TheoryReportType {

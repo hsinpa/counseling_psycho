@@ -26,8 +26,8 @@ export default function Analysis_Report_Page() {
     const [report, setReport] = useState('');
 
     useEffect(() => {
-        if (location.state != null && 'report' in location.state) {
-            setReport(location.state.report.content);
+        if (location.state != null) {
+            setReport(location.state.content);
         }
     }, [location.state])
 

@@ -17,6 +17,6 @@ export const QuestionaireFormTemplate = {
         "counseling_session": "壓力管理與焦慮處理",
         "session_expectation": "希望能夠更好地管理壓力和焦慮，找到平衡工作和家庭生活的方法。同時，我也希望能在個人成長方面有所提升，學會更有效地處理情緒和人際關係的挑戰。"
     },
-    "theory_name": "ObjectRelationsTheory",
+    "theory": "object_relation_theory",
     "question_answer_pairs" : [{}]
 }

@@ -62,7 +62,7 @@ export let RenderLongTheoryForm = function(theory: ObjectRelationTheoryType[]) {
     let theory_type : ObjectRelationTheoryType | null = null;
 
     if (theory !=null && question_index < theory.length) {
-        question = theory[question_index].question;
+        question = theory[question_index].content;
         theory_type = theory[question_index];
     }
 
@@ -99,14 +99,12 @@ export let RenderLongTheoryForm = function(theory: ObjectRelationTheoryType[]) {
             data.question_answer_pairs = [];
 
         for (let i = 0; i < answers.length; i++) {
-            theory[i].question_id
             data.question_answer_pairs.push({
-                question_id: theory[i].question_id,
-                question: theory[i].question,
-                question_order: theory[i].order,
-                answer: answers[i],
+                questionnaire_id: theory[i].id,
+                questionnaire: theory[i].content,
+                content: answers[i],
             });
-        } 
+        }
 
         if (button == null) return;
 

@@ -24,9 +24,10 @@ export let TheoryReportView = function({report } : {report: string}) {
 
     let on_submit_button = async function() {
         let button: HTMLButtonElement | null = document.querySelector<HTMLButtonElement>('.theory_report button');
-        let data = {content: report};
+        let data = {content: report, theory: 'object_relation_theory'};
         if (button == null) return;
 
+        console.log('TheoryReportView', data);
         button.disabled = true;
         try {
             fetcher.formAction = location.href;

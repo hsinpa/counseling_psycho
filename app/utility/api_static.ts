@@ -1,5 +1,5 @@
-const Domain = 'http://localhost:8842/'
-const Self = '/'
+const Domain = 'https://psycho-councel.ddns.net/'
+const Self = 'http://localhost:8842/'
 
 export const API = Object.freeze({
     'GetObjectRelationsTheory': 'questionnaire/get_theory_questions',

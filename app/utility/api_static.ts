@@ -1,6 +1,8 @@
 const Domain = 'https://psycho-councel.ddns.net/'
 const Self = 'http://localhost:8842/'
 
+export const Basic_Docs_Template = '/docs_template/basic_template.docx'
+
 export const API = Object.freeze({
     'GetObjectRelationsTheory': 'questionnaire/get_theory_questions',
     'UploadUserQuestionnaire': 'questionnaire/output_theory_report',
@@ -8,5 +10,5 @@ export const API = Object.freeze({
 });
 
 export const GetDomain = function(url: string) {
-    return Domain + url;
+    return Self + url;
 }

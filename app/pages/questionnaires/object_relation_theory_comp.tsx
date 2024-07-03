@@ -10,15 +10,15 @@ import { API, GetDomain } from '~/utility/api_static';
 
 export let TheoryContainerView = function({theory}: {theory: ObjectRelationTheoryType[]}) {
     return (<div className="container">
-        {RenderShortTheoryForm()}
+        <RenderShortTheoryForm title={'理論一 客體關係理論'}></RenderShortTheoryForm>
         {RenderLongTheoryForm(theory)}
     </div>)
 }
 
-let RenderShortTheoryForm = function() {
+export let RenderShortTheoryForm = function({title}: {title: string}) {
     return (
     <div className="short_theory_form">
-        <h2 className='title'>理論一 客體關係理論</h2>
+        <h2 className='title'>{title}</h2>
 
         <section>
             <div className="field">

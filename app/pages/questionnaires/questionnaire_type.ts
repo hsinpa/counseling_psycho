@@ -1,5 +1,6 @@
-export interface ObjectRelationTheoryType {
+export interface QuestionFormType {
     content: string,
+    type?: string, 
     id: string
 }
 

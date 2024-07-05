@@ -83,4 +83,10 @@
 
 .cognitive_behavior_container {
     padding: 0 0 1em 0;
+
+    .cognitive_long_questions {
+        p {
+            font-weight: 600;
+        }
+    }
 }

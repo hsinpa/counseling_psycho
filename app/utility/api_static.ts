@@ -1,5 +1,8 @@
 const Domain = 'https://psycho-councel.ddns.net/'
-const Self = 'http://localhost:8842/'
+const Self = 'http://127.0.0.1:8842/'
+
+export const WSS = 'wss://psycho-councel.ddns.net/ws'
+export const WS = 'ws://127.0.0.1:8842/ws'
 
 export const Basic_Docs_Template = '/docs_template/basic_template.docx'
 

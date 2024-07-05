@@ -20,6 +20,15 @@ export async function loader() {
   return await response.json();
 }
 
+export const action = async ({request}: ActionFunctionArgs) => {
+  let json = await request.json();
+  console.log(json)
+
+  let fetch_result = await fetch(GetDomain(API.UploadCognitiveReport), 
+                              {method:'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(json)});
+
+  return (await fetch_result.json());
+}
 
 
   export default function Object_Relation_Theory_Page() {

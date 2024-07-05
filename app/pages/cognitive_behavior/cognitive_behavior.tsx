@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RenderShortTheoryForm } from '../questionnaires/object_relation_theory_comp';
 import '../questionnaires/questionarie.scss'
 import { QuestionFormType } from '../questionnaires/questionnaire_type';
+import { useFetcher, useNavigate } from '@remix-run/react';
+import { get_short_usermeta_object, group_user_input_theory_quiz, group_user_persoanl_info } from '../questionnaires/questionnaire_uti.client';
 
 
 let RenderSingleQuestionSlot = function(question: QuestionFormType) {
@@ -27,15 +29,16 @@ let RenderSingleSliderSlot = function(question: QuestionFormType) {
 
 
 export let CognitiveBehaviorView = function({questions}: {questions: QuestionFormType[]}) {
+    const fetcher = useFetcher({ key: "upload_cognitive_report" });
+    const navigate = useNavigate();
+    const [user_input, set_user_input] = useState({});
 
-    let on_submit = function() {
+    let on_submit = function(e: React.MouseEvent<HTMLButtonElement>) {
         let all_inputs = document.querySelectorAll('textarea, input[type="range"]');
-        console.log(all_inputs);
-        
         let post_content: any[] = []
 
         all_inputs.forEach((x: any) =>{
-            let item = questions.find(x=>x.id == x.id);
+            let item = questions.find(k=>k.id == x.id);
 
             if (item == null || x.value == '') return;
             
@@ -46,10 +49,49 @@ export let CognitiveBehaviorView = function({questions}: {questions: QuestionFor
             });
         });
 
-        console.log(post_content)
-    }
-    
+        let data: any = {
+            user_meta: get_short_usermeta_object(),
+            theory: 'cognitive_behavior',
+            question_answer_pairs: post_content,
+        }
 
+        window.localStorage.setItem('user_input_raw',
+            group_user_persoanl_info(data['user_meta']) + '\n' +group_user_input_theory_quiz(data['question_answer_pairs'])
+        )
+        
+        set_user_input(data);
+
+        //e.currentTarget.disabled = true;
+        try {
+            fetcher.formAction = location.href;
+            fetcher.submit(
+                data,
+                {
+                  method: "POST",
+                  encType: "application/json",
+                }
+              );
+        } catch{
+            e.currentTarget.disabled = false;
+            return;   
+        }    
+    }
+
+    useEffect(() => {
+        console.log(fetcher)
+
+        if (fetcher.state == 'idle' && fetcher.data != null) {
+            console.log(fetcher.data)
+            let data: any = fetcher.data;
+
+            navigate("/cognitive_behavior/analysis_report", {
+                replace: false,
+                relative: "route",
+                state: fetcher.data,
+            });
+        }
+    }, [fetcher]);
+    
     return (<div className="container cognitive_behavior_container">
         <RenderShortTheoryForm title={'理論二 認知行為療法'}></RenderShortTheoryForm>
         <RenderLongCognitiveForm questions={questions}></RenderLongCognitiveForm>

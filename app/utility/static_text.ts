@@ -20,3 +20,12 @@ export const QuestionaireFormTemplate = {
     "theory": "object_relation_theory",
     "question_answer_pairs" : [{}]
 }
+
+export const USER_INFO_TEXT = `用戶性別: {gender}
+年紀: {age}
+會談主題: {theme}
+會談期待: {expect}`
+
+export const THEORY_REPORT_TEXT = `
+心理師問題: {question}
+用戶回答: {user_answer}`;

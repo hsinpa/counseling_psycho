@@ -4,7 +4,7 @@ import Header_View from "~/pages/layout/header";
 import { API, GetDomain } from "~/utility/api_static";
 import { ActionFunctionArgs, json } from "@remix-run/node";
 import { useEffect, useState } from "react";
-import { ObjectRelationTheoryType } from "~/pages/questionnaires/questionnaire_type";
+import { QuestionFormType } from "~/pages/questionnaires/questionnaire_type";
 
 export const meta: MetaFunction = () => {
     return [
@@ -31,7 +31,7 @@ export const meta: MetaFunction = () => {
 
   export default function Object_Relation_Theory_Page() {
     const theories_server = useLoaderData<typeof loader>();
-    const [theories, set_theories] = useState<ObjectRelationTheoryType[]>([]);
+    const [theories, set_theories] = useState<QuestionFormType[]>([]);
 
     useEffect(() => {
       if (theories_server != null) 

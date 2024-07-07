@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { generate_document } from "~/utility/docs_exporter.client";
 import { Basic_Docs_Template } from "~/utility/api_static";
 
-export let TheoryReportView = function({report } : {report: string}) {
+export let TheoryReportView = function({report, individual_analysis_input, next_page_url} : 
+    {report: string, individual_analysis_input: string, next_page_url: string}) {
     const navigate = useNavigate();
     const fetcher = useFetcher({ key: "gen_mediate_strategy" });
     const [docs_url, set_docs_url] = useState('');
@@ -14,14 +15,10 @@ export let TheoryReportView = function({report } : {report: string}) {
     }, []);
 
     useEffect(() => {
-        console.log(fetcher)
-
         if (fetcher.state == 'idle' && fetcher.data != null) {
             console.log(fetcher.data)
 
-            navigate("/object_relation_theory/mediation_strategy", {
-                replace: false,
-                relative: "route",
+            navigate(next_page_url, {
                 state: fetcher.data,
             });
         }
@@ -29,11 +26,12 @@ export let TheoryReportView = function({report } : {report: string}) {
 
 
     let on_submit_button = async function() {
-        let button: HTMLButtonElement | null = document.querySelector<HTMLButtonElement>('.theory_report button');
-        let data = {content: report, theory: 'object_relation_theory'};
+        let button: HTMLButtonElement | null = document.querySelector<HTMLButtonElement>('.theory_report .individual_analysis_btn');
+        let data = {content: individual_analysis_input, theory: 'object_relation_theory'};
         if (button == null) return;
 
         console.log('TheoryReportView', data);
+        console.log(button)
         button.disabled = true;
         try {
             fetcher.formAction = location.href;
@@ -67,7 +65,7 @@ export let TheoryReportView = function({report } : {report: string}) {
                 {report}
             </pre>
 
-            <button className="button is-fullwidth is-info is-light" onClick={on_submit_button}>輸出治療策略</button>
+            <button className="button is-fullwidth is-info is-light individual_analysis_btn" onClick={on_submit_button}>輸出治療策略</button>
         </div>
     );
 }

@@ -4,11 +4,11 @@ import { QuestionaireFormTemplate, Questionaries } from '~/utility/static_text'
 import left_arrow_img from '~/assets/UI/left-arrow.png';
 import right_arrow_img from '~/assets/UI/right-arrow.png';
 import { clamp } from '~/utility/utility_method';
-import { ObjectRelationTheoryType } from './questionnaire_type';
+import { QuestionFormType } from './questionnaire_type';
 import { useFetcher, useNavigate } from '@remix-run/react';
 import { API, GetDomain } from '~/utility/api_static';
 
-export let TheoryContainerView = function({theory}: {theory: ObjectRelationTheoryType[]}) {
+export let TheoryContainerView = function({theory}: {theory: QuestionFormType[]}) {
     return (<div className="container">
         <RenderShortTheoryForm title={'理論一 客體關係理論'}></RenderShortTheoryForm>
         {RenderLongTheoryForm(theory)}
@@ -50,7 +50,7 @@ export let RenderShortTheoryForm = function({title}: {title: string}) {
     </div>)
 }
 
-export let RenderLongTheoryForm = function(theory: ObjectRelationTheoryType[]) {
+export let RenderLongTheoryForm = function(theory: QuestionFormType[]) {
     const navigate = useNavigate();
     const fetcher = useFetcher({ key: "add-to-bag" });
 
@@ -59,7 +59,7 @@ export let RenderLongTheoryForm = function(theory: ObjectRelationTheoryType[]) {
     let [answers, set_answers] = useState<string[]>(Array(Questionaries.length).fill(""));
 
     let question = "";
-    let theory_type : ObjectRelationTheoryType | null = null;
+    let theory_type : QuestionFormType | null = null;
 
     if (theory !=null && question_index < theory.length) {
         question = theory[question_index].content;

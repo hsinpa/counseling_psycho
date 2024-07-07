@@ -15,14 +15,10 @@ export let TheoryReportView = function({report, individual_analysis_input, next_
     }, []);
 
     useEffect(() => {
-        console.log(fetcher)
-
         if (fetcher.state == 'idle' && fetcher.data != null) {
             console.log(fetcher.data)
 
             navigate(next_page_url, {
-                replace: false,
-                relative: "route",
                 state: fetcher.data,
             });
         }
@@ -30,11 +26,12 @@ export let TheoryReportView = function({report, individual_analysis_input, next_
 
 
     let on_submit_button = async function() {
-        let button: HTMLButtonElement | null = document.querySelector<HTMLButtonElement>('.theory_report button');
+        let button: HTMLButtonElement | null = document.querySelector<HTMLButtonElement>('.theory_report .individual_analysis_btn');
         let data = {content: individual_analysis_input, theory: 'object_relation_theory'};
         if (button == null) return;
 
         console.log('TheoryReportView', data);
+        console.log(button)
         button.disabled = true;
         try {
             fetcher.formAction = location.href;
@@ -68,7 +65,7 @@ export let TheoryReportView = function({report, individual_analysis_input, next_
                 {report}
             </pre>
 
-            <button className="button is-fullwidth is-info is-light" onClick={on_submit_button}>輸出治療策略</button>
+            <button className="button is-fullwidth is-info is-light individual_analysis_btn" onClick={on_submit_button}>輸出治療策略</button>
         </div>
     );
 }

@@ -37,7 +37,6 @@ export default function Analysis_Report_Page() {
     return (
     <div>
         <Header_View></Header_View>
-    const next_url = '/object_relation_theory/mediation_strategy'
         <TheoryReportView report={report} individual_analysis_input={report} next_page_url={next_url}></TheoryReportView>
     </div>);
 }

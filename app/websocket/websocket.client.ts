@@ -1,4 +1,4 @@
-import { WS } from "~/utility/api_static";
+import { WSS } from "~/utility/api_static";
 import { format_string } from "~/utility/utility_method";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -12,13 +12,12 @@ export class WebsocketManager {
 
     connect() {
         this._id = uuidv4.toString();
-        this._socket = new WebSocket(format_string(WS, [this._id]));
+        this._socket = new WebSocket(format_string(WSS, [this._id]));
 
         this._socket.addEventListener("open", (event) => {
+            console.log('socket on connect');
             this._socket?.send("Hello Server!");
           });          
     }
-
-
 }
 

@@ -1,7 +1,7 @@
 const Domain = 'https://psycho-councel.ddns.net/'
 const Self = 'http://127.0.0.1:8842/'
 
-export const WSS = 'wss://psycho-councel.ddns.net/ws'
+export const WSS = 'wss://psycho-councel.ddns.net/ws/{0}'
 export const WS = 'ws://127.0.0.1:8842/ws/{0}'
 
 export const Basic_Docs_Template = '/docs_template/basic_template.docx'
@@ -17,5 +17,5 @@ export const API = Object.freeze({
 });
 
 export const GetDomain = function(url: string) {
-    return Self + url;
+    return Domain + url;
 }

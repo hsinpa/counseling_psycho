@@ -61,7 +61,7 @@ export let CognitiveBehaviorView = function({questions}: {questions: QuestionFor
         
         set_user_input(data);
 
-        //e.currentTarget.disabled = true;
+        e.currentTarget.disabled = true; 
         try {
             fetcher.formAction = location.href;
             fetcher.submit(

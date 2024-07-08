@@ -1,0 +1,21 @@
+
+.multi_theory_input {
+
+    .columns {
+        height: 20em;
+    }
+
+    h3 {
+        font-weight: 600;
+        font-size: 1.2em;
+        padding: 1em 0em;
+    }
+    .select select[multiple] {
+        height: 23em;
+        width: 14em;
+    }
+
+    textarea {
+        height: 22em;
+    }
+}

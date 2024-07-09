@@ -1,37 +1,20 @@
 import { useMultiTheoryStore } from '~/client_model/multi_theory_model';
 import './multi_theory.scss'
-import { TheoriesType } from '../questionnaires/questionnaire_type';
+import { TheoriesType, TheoryType } from '../questionnaires/questionnaire_type';
 import { useNavigate } from '@remix-run/react';
 
 export const MultiTheoryChoices = function({theories}: {theories: TheoriesType}) {
     let set_theory_list = useMultiTheoryStore(x=>x.set_theory_list);
 
-    let select_all = function() {
-        let t_select: HTMLSelectElement | null = document.querySelector<HTMLSelectElement>('.multi_theory_input select');
-
-        if (t_select != null) {
-            let v: string[] = [];
-            for (let i = 0; i < t_select.options.length; i++) {
-                t_select.options[i].selected = true;
-
-                // Don't send all to database
-                if (t_select.options[i].value != 'all')
-                    v.push(t_select.options[i].value);
-            }
-            set_theory_list(v);
-        }
-    }
-
     let on_select = function(e: React.FormEvent<HTMLSelectElement>) {
         let options = e.currentTarget.selectedOptions;
-        let v: string[] = [];
+        let v: TheoryType[] = [];
 
         for (let i = 0; i < options.length; i++) {
-            if (options[i].value == 'all') {
-                select_all();
-                return;
-            }
-            v.push(options[i].value);
+            let t = theories.theory.find(x=>x.id == options[i].value);
+
+            if (t != null)
+                v.push(t);
         }
 
         set_theory_list(v);

@@ -20,12 +20,14 @@
     "css": "^3.0.0",
     "docxtemplater": "^3.48.0",
     "file-saver": "^2.0.5",
+    "immer": "^10.1.1",
     "isbot": "^4.1.0",
     "pizzip": "^3.1.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.77.5",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.9.2",

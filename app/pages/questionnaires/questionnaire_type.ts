@@ -15,3 +15,13 @@ export interface UserMetaType {
     counseling_session: string,
     session_expectation: string
 }
+
+export interface TheoryType {
+    id: string,
+    name: string,
+    dimension: string[]
+}
+
+export interface TheoriesType {
+    theory: TheoryType[],
+}

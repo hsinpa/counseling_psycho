@@ -25,3 +25,10 @@ export interface TheoryType {
 export interface TheoriesType {
     theory: TheoryType[],
 }
+
+export interface TheoryResp {
+    content: string,
+    theory_id: string,
+    theory_name: string,
+    id: string
+}

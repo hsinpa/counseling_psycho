@@ -1,9 +1,9 @@
 import { json, MetaFunction, useLocation, useNavigation} from "@remix-run/react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useMultiTheoryStore } from "~/client_model/multi_theory_model";
 import Header_View from "~/pages/layout/header";
-import { wsContext } from "~/root";
-import {v4 as uuid4} from 'uuid'
+import { TheoryResp } from "~/pages/questionnaires/questionnaire_type";
+import { MultiTheoryReportView } from "~/pages/multi_theory/multi_theory_report";
 
 export const meta: MetaFunction = () => {
     return [
@@ -13,27 +13,18 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Analysis_Report_Page() {
-    let user_info = useMultiTheoryStore(x=>x.user_info);
-    let selected_theory = useMultiTheoryStore(x=>x.selected_theory);
-    const socket = useContext(wsContext)
+    let location = useLocation();
+    const [report, setReport] = useState<TheoryResp[]>([]);
 
     useEffect(() => {
-        // console.log(user_info);
-        // console.log(selected_theory);
-        let session_id = uuid4()
-        socket?.ListenToEvent(session_id, (x: any) => {
-            console.log(x)
-        });
-
-        // fetch('http://localhost:8842/multi_theory/output_multi_theory_report', 
-        //     {method:'POST',
-        //      headers: {"Content-Type": "application/json"},
-        //      body: JSON.stringify({user_id: 'hi', session_id: session_id, theory_id: selected_theory[0].id, content: user_info})})
-
-    }, [user_info, selected_theory, socket])
+        if (location.state != null ) {
+            setReport(location.state);
+        }
+    }, [location.state])
 
     return (
     <div>
         <Header_View></Header_View>
+        <MultiTheoryReportView theories={report}></MultiTheoryReportView>
     </div>);
 }

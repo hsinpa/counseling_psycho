@@ -21,6 +21,22 @@ export async function loader() {
   return await response.json();
 }
 
+export const action = async ({request}: ActionFunctionArgs) => {
+  let json = await request.json();
+  console.log(json)
+
+
+  let fetch_array: any[] = [];
+  for (let i = 0; i < json.selected_theory.length; i++) {
+    let fetch_data: any = {user_id: '', session_id: '', theory_id: json.selected_theory[i].id, content: json.user_info}
+    let fetch_result = fetch(GetDomain(API.UploadMultiTheory), {method:'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(fetch_data)});
+    fetch_array.push(fetch_result);
+  }
+
+  return await Promise.all(fetch_array)
+        .then( responses =>
+            Promise.all(responses.map(x=>x.json()))
+        )}
 
   export default function Multi_Theory_Input_Page() {
     const multi_theory_data = useLoaderData<typeof loader>();

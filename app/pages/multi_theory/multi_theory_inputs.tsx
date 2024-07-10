@@ -1,7 +1,8 @@
 import { useMultiTheoryStore } from '~/client_model/multi_theory_model';
 import './multi_theory.scss'
 import { TheoriesType, TheoryType } from '../questionnaires/questionnaire_type';
-import { useNavigate } from '@remix-run/react';
+import { useFetcher, useNavigate } from '@remix-run/react';
+import { useEffect } from 'react';
 
 export const MultiTheoryChoices = function({theories}: {theories: TheoriesType}) {
     let set_theory_list = useMultiTheoryStore(x=>x.set_theory_list);
@@ -66,11 +67,45 @@ export const MultiTheoryTextarea = function() {
 export const MultiTheoryInputView = function({theory}: {theory: TheoriesType}) {
     let selected_theory = useMultiTheoryStore(x=>x.selected_theory);
     let user_info = useMultiTheoryStore(x=>x.user_info);
+    const fetcher = useFetcher({ key: "multi_theory_report" });
     const navigate = useNavigate();
 
-    let on_analyze_click = function() {
-        navigate('/multi_theory/analysis_report');
+    let on_analyze_click = function(e: React.MouseEvent<HTMLButtonElement>) {
+        let data: any = {
+            user_info: user_info,
+            selected_theory: selected_theory
+        };
+
+        e.currentTarget.disabled = true; 
+        try {
+            fetcher.formAction = location.href;
+            fetcher.submit(
+                data,
+                {
+                  method: "POST",
+                  encType: "application/json",
+                }
+              );
+        } catch{
+            e.currentTarget.disabled = false;
+            return;   
+        }    
     }
+
+    useEffect(() => {
+        console.log(fetcher)
+
+        if (fetcher.state == 'idle' && fetcher.data != null) {
+            console.log(fetcher.data)
+            let data: any = fetcher.data;
+
+            navigate("/multi_theory/analysis_report", {
+                replace: false,
+                relative: "route",
+                state: fetcher.data,
+            });
+        }
+    }, [fetcher]);
 
     return (
         <div className="container multi_theory_input">

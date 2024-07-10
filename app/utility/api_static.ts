@@ -16,6 +16,7 @@ export const API = Object.freeze({
     'UploadTheoryReport': 'questionnaire/output_mediation_strategy',
 
     'GetMultiTheory': 'multi_theory/get_multi_theory',
+    'UploadMultiTheory': 'multi_theory/output_multi_theory_report',
 
 });
 

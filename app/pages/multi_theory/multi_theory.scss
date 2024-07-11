@@ -28,3 +28,13 @@
         padding: 1em 1em;
     }
 }
+
+.theory_checkboxs {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    span {
+        padding-left: 0.5em;
+    }
+}

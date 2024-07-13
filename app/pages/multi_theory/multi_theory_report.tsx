@@ -7,7 +7,7 @@ import { generate_document } from "~/utility/docs_exporter.client";
 const MultiTheoryTabs = function({theories, active_index, callback}:
         {theories: TheoryResp[], active_index: number, callback: React.Dispatch<React.SetStateAction<number>>}) {
     
-    let list_dom = theories.map( (x, i)=> <li onClick={() => {callback(i)}} key={x.theory_id}
+    let list_dom = theories.map( (x, i)=> <li onClick={() => {callback(i)}} key={x.id}
                                             className={i == active_index ? 'is-active': ''}><a>{x.theory_name}</a>
                                             </li>);
 

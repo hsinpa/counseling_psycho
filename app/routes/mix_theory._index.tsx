@@ -19,6 +19,15 @@ export async function loader() {
   return await response.json();
 }
 
+export const action = async ({request}: ActionFunctionArgs) => {
+  let json = await request.json();
+  console.log(json)
+
+  let fetch_data: any = {user_id: '', session_id: '', theory_id: json.selected_theory.map((x:any)=>x.id), content: json.user_info}
+  let fetch_result = await fetch(GetDomain(API.UploadMixTheory), {method:'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(fetch_data)});
+  return (await fetch_result.json());
+}
+
 export default function Mix_Theory_Input_Page() {
     const multi_theory_data = useLoaderData<typeof loader>();
     const [theories, set_theories] = useState<TheoriesType>({theory:[]});

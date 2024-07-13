@@ -32,3 +32,10 @@ export interface TheoryResp {
     theory_name: string,
     id: string
 }
+
+export interface MixTheoryResp {
+    content: string,
+    theory_id: string[],
+    theory_name: string[],
+    id: string
+}

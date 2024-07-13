@@ -17,9 +17,9 @@ export const API = Object.freeze({
 
     'GetMultiTheory': 'multi_theory/get_multi_theory',
     'UploadMultiTheory': 'multi_theory/output_multi_theory_report',
-
+    'UploadMixTheory': 'multi_theory/output_mix_theory_report',
 });
 
 export const GetDomain = function(url: string) {
-    return Self + url;
+    return Domain + url;
 }

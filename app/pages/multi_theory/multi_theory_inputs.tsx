@@ -17,7 +17,6 @@ export const MultiTheoryChoices = function({theories}: {theories: TheoriesType})
             if (t != null)
                 v.push(t);
         }
-
         set_theory_list(v);
     }
 
@@ -65,6 +64,7 @@ export const MultiTheoryTextarea = function() {
 }
 
 export const MultiTheoryInputView = function({theory}: {theory: TheoriesType}) {
+    let set_theory = useMultiTheoryStore(x=>x.set_theory_list);
     let selected_theory = useMultiTheoryStore(x=>x.selected_theory);
     let user_info = useMultiTheoryStore(x=>x.user_info);
     const fetcher = useFetcher({ key: "multi_theory_report" });
@@ -91,6 +91,10 @@ export const MultiTheoryInputView = function({theory}: {theory: TheoriesType}) {
             return;   
         }    
     }
+
+    useEffect(() => {
+        set_theory([]);
+    }, [])
 
     useEffect(() => {
         console.log(fetcher)

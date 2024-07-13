@@ -13,7 +13,7 @@ export class WebsocketManager extends EventSystem {
 
     connect() {
         this._id = uuidv4.toString();
-        this._socket = new WebSocket(format_string(WS, [this._id]));
+        this._socket = new WebSocket(format_string(WSS, [this._id]));
 
         this._socket.addEventListener("open", (event) => {
             console.log('socket on connect');

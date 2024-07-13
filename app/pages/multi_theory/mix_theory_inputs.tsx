@@ -7,30 +7,33 @@ import { MultiTheoryTextarea } from './multi_theory_inputs';
 
 export const MultiTheoryChoices = function({theories}: {theories: TheoriesType}) {
     let set_theory_list = useMultiTheoryStore(x=>x.set_theory_list);
+    let selected_theory = useMultiTheoryStore(x=>x.selected_theory);
 
-    let on_select = function(e: React.FormEvent<HTMLSelectElement>) {
-        let options = e.currentTarget.selectedOptions;
-        let v: TheoryType[] = [];
+    let on_select = function(e: React.FormEvent<HTMLInputElement>) {
+        let checkboxes_dom = document.querySelectorAll<HTMLInputElement>('.thoery_checkbox');
 
-        for (let i = 0; i < options.length; i++) {
-            let t = theories.theory.find(x=>x.id == options[i].value);
-
-            if (t != null)
-                v.push(t);
+        let theory_checkboxes: TheoryType[] = []; 
+        for (let i = 0; i < checkboxes_dom.length; i++) {
+            if (theory_checkboxes.length < 3 && checkboxes_dom[i].checked) {
+                let t = theories.theory.find(x=>x.id == checkboxes_dom[i].value);
+                if (t != null) theory_checkboxes.push(t);
+            } else {
+                checkboxes_dom[i].checked = false;
+            }
         }
-
-        set_theory_list(v);
+        
+        set_theory_list(theory_checkboxes);
     }
 
     return (
     <div className="column">
-        <h3>選擇多個理論進行分析(最大四個)</h3>
+        <h3>選擇三種理論進行融合</h3>
         
         <section className='theory_checkboxs'>
             {theories.theory.map((object, i) => {
                 return (
-                <label className="checkbox">
-                    <input type="checkbox" className='thoery_checkbox' value={object.id} key={object.id} />
+                <label className="checkbox" key={object.id}>
+                    <input type="checkbox" onChange={on_select} className='thoery_checkbox' value={object.id} key={object.id} />
                     <span>{object.name}</span>
                 </label>)
             })}
@@ -40,9 +43,10 @@ export const MultiTheoryChoices = function({theories}: {theories: TheoriesType})
 }
 
 export const MixTheoryInputView = function({theory}: {theory: TheoriesType}) {
+    let set_theory = useMultiTheoryStore(x=>x.set_theory_list);
     let selected_theory = useMultiTheoryStore(x=>x.selected_theory);
     let user_info = useMultiTheoryStore(x=>x.user_info);
-    const fetcher = useFetcher({ key: "multi_theory_report" });
+    const fetcher = useFetcher({ key: "mix_theory_report" });
     const navigate = useNavigate();
 
     let on_analyze_click = function(e: React.MouseEvent<HTMLButtonElement>) {
@@ -68,16 +72,23 @@ export const MixTheoryInputView = function({theory}: {theory: TheoriesType}) {
     }
 
     useEffect(() => {
+        set_theory([]);
+
+        return () => {
+            set_theory([]);
+        }
+    }, [])
+
+    useEffect(() => {
         console.log(fetcher)
 
         if (fetcher.state == 'idle' && fetcher.data != null) {
             console.log(fetcher.data)
             let data: any = fetcher.data;
 
-            navigate("/multi_theory/analysis_report", {
-                replace: false,
+            navigate("/mix_theory/analysis_report", {
                 relative: "route",
-                state: fetcher.data,
+                state: data,
             });
         }
     }, [fetcher]);

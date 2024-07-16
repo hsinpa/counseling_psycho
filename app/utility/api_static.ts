@@ -14,6 +14,10 @@ export const API = Object.freeze({
     'GetObjectRelationsTheory': 'questionnaire/get_theory_questions',
     'UploadUserQuestionnaire': 'questionnaire/output_theory_report',
     'UploadTheoryReport': 'questionnaire/output_mediation_strategy',
+
+    'GetMultiTheory': 'multi_theory/get_multi_theory',
+    'UploadMultiTheory': 'multi_theory/output_multi_theory_report',
+    'UploadMixTheory': 'multi_theory/output_mix_theory_report',
 });
 
 export const GetDomain = function(url: string) {

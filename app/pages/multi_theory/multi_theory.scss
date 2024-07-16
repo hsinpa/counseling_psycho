@@ -1,0 +1,40 @@
+
+.multi_theory_input {
+
+    .columns {
+        height: 30em;
+    }
+
+    h3 {
+        font-weight: 600;
+        font-size: 1.2em;
+        padding: 1em 0em;
+    }
+    .select select[multiple] {
+        height: 23em;
+        width: 14em;
+    }
+
+    textarea {
+        margin-top: 0.2em;
+        height: 12.5em;
+    }
+}
+
+.multi_theory_report {
+
+    pre {
+        margin: 1em 0em;
+        padding: 1em 1em;
+    }
+}
+
+.theory_checkboxs {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    span {
+        padding-left: 0.5em;
+    }
+}

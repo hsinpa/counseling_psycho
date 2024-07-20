@@ -83,13 +83,8 @@ export const MixTheoryInputView = function({theory}: {theory: TheoriesType}) {
         console.log(fetcher)
 
         if (fetcher.state == 'idle' && fetcher.data != null) {
-            console.log(fetcher.data)
-            let data: any = fetcher.data;
-
-            navigate("/mix_theory/analysis_report", {
-                relative: "route",
-                state: data,
-            });
+            localStorage.setItem('user_report', JSON.stringify(fetcher.data));
+            window.location.href="/mix_theory/analysis_report";
         }
     }, [fetcher]);
 

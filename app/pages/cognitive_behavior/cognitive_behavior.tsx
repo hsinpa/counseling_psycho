@@ -84,11 +84,8 @@ export let CognitiveBehaviorView = function({questions}: {questions: QuestionFor
             console.log(fetcher.data)
             let data: any = fetcher.data;
 
-            navigate("/cognitive_behavior/analysis_report", {
-                replace: false,
-                relative: "route",
-                state: fetcher.data,
-            });
+            localStorage.setItem('user_report', JSON.stringify(fetcher.data));
+            window.location.href="/cognitive_behavior/analysis_report";
         }
     }, [fetcher]);
     

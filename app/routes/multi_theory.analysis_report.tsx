@@ -13,14 +13,17 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Analysis_Report_Page() {
-    let location = useLocation();
     const [report, setReport] = useState<TheoryResp[]>([]);
 
     useEffect(() => {
-        if (location.state != null ) {
-            setReport(location.state);
+        let report_str = localStorage.getItem('user_report');
+
+        if (report_str != null) {
+            let report_json = JSON.parse(report_str);
+            console.log(report_json)
+            setReport(report_json);
         }
-    }, [location.state])
+    }, [])
 
     return (
     <div>

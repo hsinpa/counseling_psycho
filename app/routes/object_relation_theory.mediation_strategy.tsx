@@ -11,16 +11,17 @@ export const meta: MetaFunction = () => {
     ];
 };
 
-export default function Mediation_Strategy_Page() {
-    let location = useLocation();
-    
+export default function Mediation_Strategy_Page() {    
     const [report, setReport] = useState('');
 
     useEffect(() => {
-        if (location.state != null ) {
-            setReport(location.state.content);
+        let report_str = localStorage.getItem('overall_report');
+
+        if (report_str != null) {
+            let report_json = JSON.parse(report_str);
+            setReport(report_json.content);
         }
-    }, [location.state])
+    }, [])
 
     return (
     <div>

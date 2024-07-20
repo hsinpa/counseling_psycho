@@ -97,17 +97,9 @@ export const MultiTheoryInputView = function({theory}: {theory: TheoriesType}) {
     }, [])
 
     useEffect(() => {
-        console.log(fetcher)
-
         if (fetcher.state == 'idle' && fetcher.data != null) {
-            console.log(fetcher.data)
-            let data: any = fetcher.data;
-
-            navigate("/multi_theory/analysis_report", {
-                replace: false,
-                relative: "route",
-                state: fetcher.data,
-            });
+            localStorage.setItem('user_report', JSON.stringify(fetcher.data));
+            window.location.href="/multi_theory/analysis_report";
         }
     }, [fetcher]);
 

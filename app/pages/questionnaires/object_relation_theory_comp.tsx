@@ -5,7 +5,7 @@ import left_arrow_img from '~/assets/UI/left-arrow.png';
 import right_arrow_img from '~/assets/UI/right-arrow.png';
 import { clamp } from '~/utility/utility_method';
 import { QuestionFormType } from './questionnaire_type';
-import { useFetcher, useNavigate } from '@remix-run/react';
+import { redirect, useFetcher, useNavigate } from '@remix-run/react';
 import { API, GetDomain } from '~/utility/api_static';
 
 export let TheoryContainerView = function({theory}: {theory: QuestionFormType[]}) {
@@ -69,12 +69,8 @@ export let RenderLongTheoryForm = function(theory: QuestionFormType[]) {
     useEffect(() => {
         console.log(fetcher)
         if (fetcher.state == 'loading' && fetcher.data != null) {
-
-            navigate("/object_relation_theory/analysis_report", {
-                replace: false,
-                relative: "route",
-                state: fetcher.data,
-            });
+            localStorage.setItem('user_report', JSON.stringify(fetcher.data));
+            window.location.href="/object_relation_theory/analysis_report";
         }
     }, [fetcher])
 

@@ -1,5 +1,5 @@
 import { ActionFunctionArgs } from "@remix-run/node";
-import { MetaFunction, useLocation, useNavigation} from "@remix-run/react";
+import { json, MetaFunction, useLocation, useNavigation} from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import Header_View from "~/pages/layout/header";
@@ -28,11 +28,13 @@ export default function Analysis_Report_Page() {
     const next_url = '/object_relation_theory/mediation_strategy'
 
     useEffect(() => {
-        if (location.state != null) {
-            setReport(location.state.content);
+        let report_str = localStorage.getItem('user_report');
 
+        if (report_str != null) {
+            let report_json = JSON.parse(report_str);
+            setReport(report_json.content);
         }
-    }, [location.state])
+    }, []);
 
     return (
     <div>

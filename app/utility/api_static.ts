@@ -21,5 +21,5 @@ export const API = Object.freeze({
 });
 
 export const GetDomain = function(url: string) {
-    return Domain + url;
+    return Self + url;
 }

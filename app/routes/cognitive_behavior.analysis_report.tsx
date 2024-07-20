@@ -22,21 +22,23 @@ export const action = async ({request}: ActionFunctionArgs) => {
   }
 
 export default function Cognitiive_Report_Page() {
-    let location = useLocation();
     const [report, setReport] = useState('');
     const next_url = '/cognitive_behavior/individual_report'
     const [user_input, setUserInput] = useState('');
 
 
     useEffect(() => {
-        if (location.state != null) {
+        let report_str = localStorage.getItem('user_report');
+
+        if (report_str != null) {
             let storage_user_input = localStorage.getItem('user_input_raw');
-            setReport(location.state.content);
+            let report_json = JSON.parse(report_str);
+            setReport(report_json.content);
             setUserInput(
                 (storage_user_input == null) ? '' : storage_user_input
             );
         }
-    }, [location.state])
+    }, [])
 
     return (
     <div>

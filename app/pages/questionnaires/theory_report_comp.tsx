@@ -1,5 +1,5 @@
 import './questionarie.scss'
-import { useFetcher, useNavigate } from "@remix-run/react";
+import { redirect, useFetcher, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { generate_document } from "~/utility/docs_exporter.client";
 import { Basic_Docs_Template } from "~/utility/api_static";
@@ -18,9 +18,8 @@ export let TheoryReportView = function({report, individual_analysis_input, next_
         if (fetcher.state == 'idle' && fetcher.data != null) {
             console.log(fetcher.data)
 
-            navigate(next_page_url, {
-                state: fetcher.data,
-            });
+            localStorage.setItem('overall_report', JSON.stringify(fetcher.data));            
+            window.location.href=next_page_url;
         }
     }, [fetcher])
 

@@ -7,7 +7,7 @@ import { generate_document } from "~/utility/docs_exporter.client";
 const MultiTheoryTabs = function({theories, active_index, callback}:
         {theories: TheoryResp[], active_index: number, callback: React.Dispatch<React.SetStateAction<number>>}) {
     
-    let list_dom = theories.map( (x, i)=> <li onClick={() => {callback(i)}} key={x.id}
+    let list_dom = theories.map( (x, i)=> <li onClick={() => {callback(i)}} key={x.theory_id}
                                             className={i == active_index ? 'is-active': ''}><a>{x.theory_name}</a>
                                             </li>);
 
@@ -21,9 +21,7 @@ const MultiTheoryTabs = function({theories, active_index, callback}:
 }
 
 const MultiContent = function({theory}: {theory: TheoryResp }) {
-    if (theory == null || theory.content == null)
-        return (<Fragment></Fragment>);
-    const [docs_url, set_docs_url] = useState('');
+    const [docs_url, set_docs_url] = useState<string>('');
 
     useEffect(() => {
         set_docs_url(window.location.origin + Basic_Docs_Template);
@@ -33,7 +31,11 @@ const MultiContent = function({theory}: {theory: TheoryResp }) {
         generate_document(docs_url, '個案分析報告 - ' + theory.theory_name, theory.content);
     }
 
-return (
+
+    if (theory == null || theory.content == null)
+        return (<></>);
+
+    return (
     <div className="content">
         <button className="button" onClick={on_export_btn}>匯出檔案</button>
         <pre>{theory.content}</pre>

@@ -35,7 +35,7 @@ export default function App() {
 
   useEffect(() => {
     let websocket_manager = new WebsocketManager();
-    websocket_manager.connect();
+    // websocket_manager.connect();
 
     setSocket(websocket_manager);
     return () => {

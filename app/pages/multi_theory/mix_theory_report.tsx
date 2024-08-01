@@ -1,7 +1,8 @@
-import { Fragment, useEffect, useState } from "react";
-import { Basic_Docs_Template } from "~/utility/api_static";
+import { Fragment, useContext, useEffect, useState } from "react";
+import { Basic_Docs_Template, SocketEvent } from "~/utility/api_static";
 import { generate_document } from "~/utility/docs_exporter.client";
 import { MixTheoryResp } from "../questionnaires/questionnaire_type";
+import { wsContext } from "~/root";
 
 const MixContent = function({theory}: {theory: MixTheoryResp }) {
     if (theory == null || theory.content == null)
@@ -32,9 +33,35 @@ return (
 )
 }
 
+const StreamingContent = function() {
+    const [docs_url, set_docs_url] = useState<string>('');
+    const [content, setContent] = useState<string>('');
+    const socket = useContext(wsContext);
+
+    const on_socket_callback = function(socket_data: any) {
+        console.log(socket_data);
+    }
+
+    useEffect(() => {
+        socket?.ListenToEvent(SocketEvent.bot, on_socket_callback);
+        set_docs_url(window.location.origin + Basic_Docs_Template);
+    }, []);
+
+    const on_export_btn = function() {
+        generate_document(docs_url, '個案分析報告 - ', content);
+    }
+
+    return (
+    <div className="content">
+        <button className="button" onClick={on_export_btn}>匯出檔案</button>
+        <pre>{content}</pre>
+    </div>
+)
+}
+
 export const MixTheoryReportView = function({mix_thoery}: {mix_thoery: MixTheoryResp}) {
 
     return (<div className="container multi_theory_report">
-        <MixContent theory={mix_thoery} ></MixContent>
+        <StreamingContent></StreamingContent>
     </div>)
 }

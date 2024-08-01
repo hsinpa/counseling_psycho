@@ -8,7 +8,7 @@ import {
 import "bulma";
 import "./share_styles/base.scss";
 import { createContext, useEffect, useState } from "react";
-import { WebsocketManager } from "./websocket/websocket.client";
+import { WebsocketManager } from "./websocket/websocket";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -31,13 +31,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export let wsContext = createContext<WebsocketManager | undefined>(undefined);
 
 export default function App() {
-  let [socket, setSocket] =  useState<WebsocketManager>();
+  const [socket, setSocket] =  useState<WebsocketManager>(new WebsocketManager());
 
   useEffect(() => {
-    let websocket_manager = new WebsocketManager();
-    // websocket_manager.connect();
+    socket.connect();
 
-    setSocket(websocket_manager);
     return () => {
     };
   }, []);

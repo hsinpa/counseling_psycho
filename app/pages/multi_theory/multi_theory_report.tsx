@@ -1,8 +1,9 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { TheoryResp } from "../questionnaires/questionnaire_type";
 import './multi_theory.scss'
-import { Basic_Docs_Template } from "~/utility/api_static";
+import { Basic_Docs_Template, SocketEvent } from "~/utility/api_static";
 import { generate_document } from "~/utility/docs_exporter.client";
+import { wsContext } from "~/root";
 
 const MultiTheoryTabs = function({theories, active_index, callback}:
         {theories: TheoryResp[], active_index: number, callback: React.Dispatch<React.SetStateAction<number>>}) {
@@ -42,8 +43,6 @@ const MultiContent = function({theory}: {theory: TheoryResp }) {
     </div>
 )
 }
-
-
 
 export const MultiTheoryReportView = function({theories}: {theories: TheoryResp[]}) {
     const [active_thoery_index, set_theory_index] = useState<number>(0);

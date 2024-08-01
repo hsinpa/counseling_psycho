@@ -1,9 +1,11 @@
 import { useMultiTheoryStore } from '~/client_model/multi_theory_model';
 import './multi_theory.scss'
 import { TheoriesType, TheoryType } from '../questionnaires/questionnaire_type';
-import { useFetcher, useNavigate } from '@remix-run/react';
-import { useEffect } from 'react';
+import { redirect, useFetcher, useNavigate } from '@remix-run/react';
+import { useContext, useEffect } from 'react';
 import { MultiTheoryTextarea } from './multi_theory_inputs';
+import { wsContext } from '~/root';
+import { v4 as uuidv4 } from 'uuid';
 
 export const MultiTheoryChoices = function({theories}: {theories: TheoriesType}) {
     let set_theory_list = useMultiTheoryStore(x=>x.set_theory_list);
@@ -47,12 +49,19 @@ export const MixTheoryInputView = function({theory}: {theory: TheoriesType}) {
     let selected_theory = useMultiTheoryStore(x=>x.selected_theory);
     let user_info = useMultiTheoryStore(x=>x.user_info);
     const fetcher = useFetcher({ key: "mix_theory_report" });
-    const navigate = useNavigate();
+    let websocket = useContext(wsContext)
 
     let on_analyze_click = function(e: React.MouseEvent<HTMLButtonElement>) {
+        if (websocket != null) {
+            console.log('socket id', websocket.id);
+        }
+        console.log('websocket', websocket);
+
         let data: any = {
             user_info: user_info,
-            selected_theory: selected_theory
+            selected_theory: selected_theory,
+            user_id: websocket?.id,
+            session_id: uuidv4()
         };
 
         e.currentTarget.disabled = true; 
@@ -71,8 +80,18 @@ export const MixTheoryInputView = function({theory}: {theory: TheoriesType}) {
         }    
     }
 
+    let on_fetch_return = function() {
+        return redirect('/mix_theory/analysis_report')
+    }
+
     useEffect(() => {
-        set_theory([]);
+        console.log('websocket', websocket);
+
+        return () => {
+        }
+    }, [websocket])
+
+    useEffect(() => {
 
         return () => {
             set_theory([]);
@@ -83,8 +102,10 @@ export const MixTheoryInputView = function({theory}: {theory: TheoriesType}) {
         console.log(fetcher)
 
         if (fetcher.state == 'idle' && fetcher.data != null) {
+            console.log('MixTheoryInputView MixTheory', JSON.stringify(fetcher.data));
             localStorage.setItem('user_report', JSON.stringify(fetcher.data));
-            window.location.href="/mix_theory/analysis_report";
+            // window.location.href="/mix_theory/analysis_report";
+            on_fetch_return();
         }
     }, [fetcher]);
 

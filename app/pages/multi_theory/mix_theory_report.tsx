@@ -3,6 +3,8 @@ import { Basic_Docs_Template, SocketEvent } from "~/utility/api_static";
 import { generate_document } from "~/utility/docs_exporter.client";
 import { MixTheoryResp } from "../questionnaires/questionnaire_type";
 import { wsContext } from "~/root";
+import { StreamingUITool } from "~/websocket/streaming_ui_tool";
+import { useSearchParams } from "@remix-run/react";
 
 const MixContent = function({theory}: {theory: MixTheoryResp }) {
     if (theory == null || theory.content == null)
@@ -37,13 +39,27 @@ const StreamingContent = function() {
     const [docs_url, set_docs_url] = useState<string>('');
     const [content, setContent] = useState<string>('');
     const socket = useContext(wsContext);
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    const on_socket_callback = function(socket_data: any) {
-        console.log(socket_data);
+    const on_socket_callback = function(event_name: string, socket_data: string) {
+        setContent( socket_data);
     }
 
     useEffect(() => {
-        socket?.ListenToEvent(SocketEvent.bot, on_socket_callback);
+        //Cache
+        let session_id = searchParams.get('session_id');
+
+
+        // Socket
+        if (socket != null) {
+            let streaming_tools = new StreamingUITool(socket);
+            streaming_tools.callback = on_socket_callback;
+
+            if (session_id != null) {
+                streaming_tools.trigger_cache_data([session_id]);
+            }
+        }        
+
         set_docs_url(window.location.origin + Basic_Docs_Template);
     }, []);
 

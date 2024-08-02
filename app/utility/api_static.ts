@@ -21,7 +21,7 @@ export const API = Object.freeze({
 });
 
 export const GetDomain = function(url: string) {
-    return Self + url;
+    return process.env.API_DOMAIN + url;
 }
 
 export const SocketEvent = Object.freeze({

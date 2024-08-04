@@ -22,9 +22,8 @@ export const meta: MetaFunction = () => {
   
   export const action = async ({request}: ActionFunctionArgs) => {
     let json = await request.json();
-    console.log(json)
 
-    let fetch_result = fetch(GetDomain(API.UploadUserQuestionnaire), 
+    let fetch_result = await fetch(GetDomain(API.UploadUserQuestionnaire), 
                                 {method:'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(json)});
 
     return redirect('/object_relation_theory/analysis_report?session_id='+json.session_id);

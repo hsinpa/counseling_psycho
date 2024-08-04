@@ -2,8 +2,7 @@ const Domain = 'https://psycho-councel.ddns.net/'
 const Self = 'http://127.0.0.1:8842/'
 
 export const WSS = process.env.WSS_DOMAIN;
-
-const Remote_WSS = 'wss://psycho-councel.ddns.net/ws'
+export const Remote_WSS = 'wss://psycho-councel.ddns.net/ws'
 const Local_WS = 'ws://127.0.0.1:8842/ws'
 
 export const Basic_Docs_Template = '/docs_template/basic_template.docx'

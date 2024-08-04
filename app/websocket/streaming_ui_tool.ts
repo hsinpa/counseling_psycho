@@ -18,8 +18,6 @@ export class StreamingUITool {
         for (let session_id of session_id_list) {
             let cache_data = localStorage.getItem(session_id);
 
-            console.log('cache_data', session_id)
-
             if (cache_data != null) {
                 this.callback?.(session_id, cache_data);
                 return;
@@ -51,12 +49,12 @@ export class StreamingUITool {
 
         if (this.callback != undefined)
             this.callback(streaming_data.session_id, final_text);
-}
+    }
 }
 
 export const socket_callback_tool_with_session = function(session_id: string, socket: WebsocketManager | undefined, 
     callback: (session_id: string, socket_data: string) => void ) {
-        
+
     // Socket
     if (socket != null) {
         let streaming_tools = new StreamingUITool(socket);

@@ -32,7 +32,6 @@ const MultiContent = function({theory}: {theory: TheoryResp }) {
         generate_document(docs_url, '個案分析報告 - ' + theory.theory_name, theory.content);
     }
 
-
     if (theory == null || theory.content == null)
         return (<></>);
 

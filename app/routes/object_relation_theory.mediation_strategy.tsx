@@ -1,8 +1,10 @@
-import { MetaFunction, useLocation, useNavigation} from "@remix-run/react";
-import { useEffect, useState } from "react";
+import { MetaFunction, useLocation, useNavigation, useSearchParams} from "@remix-run/react";
+import { useContext, useEffect, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import Header_View from "~/pages/layout/header";
 import { MediationStrategyView } from "~/pages/questionnaires/mediation_strategy";
+import { wsContext } from "~/root";
+import { StreamingUITool } from "~/websocket/streaming_ui_tool";
 
 export const meta: MetaFunction = () => {
     return [
@@ -13,14 +15,24 @@ export const meta: MetaFunction = () => {
 
 export default function Mediation_Strategy_Page() {    
     const [report, setReport] = useState('');
+    const socket = useContext(wsContext)
+    const [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
-        let report_str = localStorage.getItem('overall_report');
+        //Cache
+        let session_id = searchParams.get('session_id');
 
-        if (report_str != null) {
-            let report_json = JSON.parse(report_str);
-            setReport(report_json.content);
-        }
+        // Socket
+        if (socket != null) {
+            let streaming_tools = new StreamingUITool(socket);
+            streaming_tools.callback = (event_name: string, socket_data: string) => {
+                setReport(socket_data);
+            };
+
+            if (session_id != null) {
+                streaming_tools.trigger_cache_data([session_id]);
+            }
+        }        
     }, [])
 
     return (

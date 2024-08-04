@@ -1,4 +1,4 @@
-import { MetaFunction, useActionData, useLoaderData, useNavigate } from "@remix-run/react";
+import { MetaFunction, redirect, useActionData, useLoaderData, useNavigate } from "@remix-run/react";
 import { TheoryContainerView } from "~/pages/questionnaires/object_relation_theory_comp";
 import Header_View from "~/pages/layout/header";
 import { API, GetDomain } from "~/utility/api_static";
@@ -22,14 +22,12 @@ export async function loader() {
 
 export const action = async ({request}: ActionFunctionArgs) => {
   let json = await request.json();
-  console.log(json)
 
-  let fetch_result = await fetch(GetDomain(API.UploadCognitiveReport), 
+  let fetch_result = fetch(GetDomain(API.UploadCognitiveReport), 
                               {method:'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(json)});
 
-  return (await fetch_result.json());
+  return redirect('/cognitive_behavior/analysis_report?session_id='+json.session_id);
 }
-
 
   export default function Object_Relation_Theory_Page() {
     const theories_server = useLoaderData<typeof loader>();

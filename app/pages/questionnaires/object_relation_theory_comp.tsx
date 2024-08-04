@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import './questionarie.scss'
 import { QuestionaireFormTemplate, Questionaries } from '~/utility/static_text'
 import left_arrow_img from '~/assets/UI/left-arrow.png';
@@ -7,6 +7,8 @@ import { clamp } from '~/utility/utility_method';
 import { QuestionFormType } from './questionnaire_type';
 import { redirect, useFetcher, useNavigate } from '@remix-run/react';
 import { API, GetDomain } from '~/utility/api_static';
+import { wsContext } from '~/root';
+import { v4 as uuidv4 } from 'uuid';
 
 export let TheoryContainerView = function({theory}: {theory: QuestionFormType[]}) {
     return (<div className="container">
@@ -51,8 +53,8 @@ export let RenderShortTheoryForm = function({title}: {title: string}) {
 }
 
 export let RenderLongTheoryForm = function(theory: QuestionFormType[]) {
-    const navigate = useNavigate();
     const fetcher = useFetcher({ key: "add-to-bag" });
+    const socket = useContext(wsContext)
 
     let [progress, setProgress] = useState<number>(0);
     let [question_index, set_question_index] = useState<number>(0);
@@ -70,7 +72,7 @@ export let RenderLongTheoryForm = function(theory: QuestionFormType[]) {
         console.log(fetcher)
         if (fetcher.state == 'loading' && fetcher.data != null) {
             localStorage.setItem('user_report', JSON.stringify(fetcher.data));
-            window.location.href="/object_relation_theory/analysis_report";
+            // window.location.href="/object_relation_theory/analysis_report";
         }
     }, [fetcher])
 
@@ -90,9 +92,15 @@ export let RenderLongTheoryForm = function(theory: QuestionFormType[]) {
     }
 
     let on_submit_button = async function() {
+        if (socket == null) return;
+        
         let button: HTMLButtonElement | null = document.querySelector<HTMLButtonElement>('.long_theory_form button');
-        let data = {...QuestionaireFormTemplate};
-            data.question_answer_pairs = [];
+        let data = {...QuestionaireFormTemplate,
+            user_id: socket.id,
+            session_id: uuidv4()
+        };
+
+        data.question_answer_pairs = [];
 
         for (let i = 0; i < answers.length; i++) {
             data.question_answer_pairs.push({

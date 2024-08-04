@@ -2,10 +2,12 @@ import { useMultiTheoryStore } from '~/client_model/multi_theory_model';
 import './multi_theory.scss'
 import { TheoriesType, TheoryType } from '../questionnaires/questionnaire_type';
 import { useFetcher, useNavigate } from '@remix-run/react';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
+import { wsContext } from '~/root';
 
 export const MultiTheoryChoices = function({theories}: {theories: TheoriesType}) {
     let set_theory_list = useMultiTheoryStore(x=>x.set_theory_list);
+    const max_theory_size = 4;
 
     let on_select = function(e: React.FormEvent<HTMLSelectElement>) {
         let options = e.currentTarget.selectedOptions;
@@ -16,7 +18,10 @@ export const MultiTheoryChoices = function({theories}: {theories: TheoriesType})
 
             if (t != null)
                 v.push(t);
+
+            if (v.length >= max_theory_size) break;
         }
+
         set_theory_list(v);
     }
 
@@ -25,7 +30,7 @@ export const MultiTheoryChoices = function({theories}: {theories: TheoriesType})
         <h3>選擇多個理論進行分析(最大四個)</h3>
         
         <div className="select is-multiple">
-            <select multiple={true} size={4} onChange={on_select}>
+            <select multiple={true} size={max_theory_size} onChange={on_select}>
                 {theories.theory.map((object, i) => <option value={object.id} key={object.id}>{object.name}</option>)}
         </select>
         </div>
@@ -68,12 +73,13 @@ export const MultiTheoryInputView = function({theory}: {theory: TheoriesType}) {
     let selected_theory = useMultiTheoryStore(x=>x.selected_theory);
     let user_info = useMultiTheoryStore(x=>x.user_info);
     const fetcher = useFetcher({ key: "multi_theory_report" });
-    const navigate = useNavigate();
+    let websocket = useContext(wsContext)
 
     let on_analyze_click = function(e: React.MouseEvent<HTMLButtonElement>) {
         let data: any = {
             user_info: user_info,
-            selected_theory: selected_theory
+            selected_theory: selected_theory,
+            user_id: websocket?.id,
         };
 
         e.currentTarget.disabled = true; 

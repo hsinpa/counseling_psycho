@@ -44,7 +44,6 @@ export class StreamingUITool {
             final_text = streaming_data.data;
 
             localStorage.setItem(streaming_data.session_id, final_text);
-            localStorage.
             console.log('session_id_list', streaming_data.session_id);
         }
 
@@ -52,5 +51,28 @@ export class StreamingUITool {
 
         if (this.callback != undefined)
             this.callback(streaming_data.session_id, final_text);
+}
+}
+
+export const socket_callback_tool_with_session = function(session_id: string, socket: WebsocketManager | undefined, 
+    callback: (session_id: string, socket_data: string) => void ) {
+        
+    // Socket
+    if (socket != null) {
+        let streaming_tools = new StreamingUITool(socket);
+        streaming_tools.callback = callback;
+
+        if (session_id != null) {
+            streaming_tools.trigger_cache_data([session_id]);
+        }
     }
+}
+
+export const socket_callback_tool = function(searchParams: URLSearchParams, socket: WebsocketManager | undefined, 
+                                            callback: (session_id: string, socket_data: string) => void ) {
+    //Cache
+    let session_id = searchParams.get('session_id');
+
+    if (session_id != null) 
+        socket_callback_tool_with_session(session_id, socket, callback);
 }

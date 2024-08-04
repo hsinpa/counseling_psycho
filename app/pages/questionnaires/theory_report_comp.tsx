@@ -1,14 +1,16 @@
 import './questionarie.scss'
-import { redirect, useFetcher, useNavigate } from "@remix-run/react";
-import { useEffect, useState } from "react";
+import { redirect, useFetcher, useNavigate, useSearchParams } from "@remix-run/react";
+import { useContext, useEffect, useState } from "react";
 import { generate_document } from "~/utility/docs_exporter.client";
 import { Basic_Docs_Template } from "~/utility/api_static";
+import { v4 as uuidv4 } from 'uuid';
+import { wsContext } from '~/root';
 
 export let TheoryReportView = function({report, individual_analysis_input, next_page_url} : 
     {report: string, individual_analysis_input: string, next_page_url: string}) {
-    const navigate = useNavigate();
     const fetcher = useFetcher({ key: "gen_mediate_strategy" });
     const [docs_url, set_docs_url] = useState('');
+    const socket = useContext(wsContext)
 
     useEffect(() => {
         set_docs_url(window.location.origin + Basic_Docs_Template);
@@ -25,8 +27,14 @@ export let TheoryReportView = function({report, individual_analysis_input, next_
 
 
     let on_submit_button = async function() {
+        if (socket == null) return;
+
         let button: HTMLButtonElement | null = document.querySelector<HTMLButtonElement>('.theory_report .individual_analysis_btn');
-        let data = {content: individual_analysis_input, theory: 'object_relation_theory'};
+        let data = {content: individual_analysis_input, 
+                    theory: 'object_relation_theory',
+                    user_id: socket.id,
+                    session_id: uuidv4()
+         };
         if (button == null) return;
 
         console.log('TheoryReportView', data);

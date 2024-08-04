@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { RenderShortTheoryForm } from '../questionnaires/object_relation_theory_comp';
 import '../questionnaires/questionarie.scss'
 import { QuestionFormType } from '../questionnaires/questionnaire_type';
 import { useFetcher, useNavigate } from '@remix-run/react';
 import { get_short_usermeta_object, group_user_input_theory_quiz, group_user_persoanl_info } from '../questionnaires/questionnaire_uti.client';
+import { v4 as uuidv4 } from 'uuid';
+import { wsContext } from '~/root';
 
 
 let RenderSingleQuestionSlot = function(question: QuestionFormType) {
@@ -30,10 +32,12 @@ let RenderSingleSliderSlot = function(question: QuestionFormType) {
 
 export let CognitiveBehaviorView = function({questions}: {questions: QuestionFormType[]}) {
     const fetcher = useFetcher({ key: "upload_cognitive_report" });
-    const navigate = useNavigate();
     const [user_input, set_user_input] = useState({});
+    const socket = useContext(wsContext)
 
     let on_submit = function(e: React.MouseEvent<HTMLButtonElement>) {
+        if (socket == null) return;
+
         let all_inputs = document.querySelectorAll('textarea, input[type="range"]');
         let post_content: any[] = []
 
@@ -53,6 +57,8 @@ export let CognitiveBehaviorView = function({questions}: {questions: QuestionFor
             user_meta: get_short_usermeta_object(),
             theory: 'cognitive_behavior',
             question_answer_pairs: post_content,
+            user_id: socket.id,
+            session_id: uuidv4()
         }
 
         window.localStorage.setItem('user_input_raw',
@@ -76,18 +82,6 @@ export let CognitiveBehaviorView = function({questions}: {questions: QuestionFor
             return;   
         }    
     }
-
-    useEffect(() => {
-        console.log(fetcher)
-
-        if (fetcher.state == 'idle' && fetcher.data != null) {
-            console.log(fetcher.data)
-            let data: any = fetcher.data;
-
-            localStorage.setItem('user_report', JSON.stringify(fetcher.data));
-            window.location.href="/cognitive_behavior/analysis_report";
-        }
-    }, [fetcher]);
     
     return (<div className="container cognitive_behavior_container">
         <RenderShortTheoryForm title={'理論二 認知行為療法'}></RenderShortTheoryForm>

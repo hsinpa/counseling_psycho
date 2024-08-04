@@ -27,21 +27,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
     </html>
   );
 }
-
+const websocket_manager = new WebsocketManager();
 export let wsContext = createContext<WebsocketManager | undefined>(undefined);
 
 export default function App() {
-  const [socket, setSocket] =  useState<WebsocketManager>(new WebsocketManager());
 
   useEffect(() => {
-    socket.connect();
+    websocket_manager.connect();
 
     return () => {
     };
   }, []);
   
 
-  return (<wsContext.Provider value={socket}>
+  return (<wsContext.Provider value={websocket_manager}>
     <Outlet />
   </wsContext.Provider>);
 }

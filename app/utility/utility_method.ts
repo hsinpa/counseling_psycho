@@ -7,3 +7,7 @@ export function format_string(string: string, params: any[]) {
         return typeof params[index] !== 'undefined' ? params[index] : match;
     });
 }
+
+export function sleep(timestamp: number){ 
+    return new Promise(r => setTimeout(r, timestamp));
+}

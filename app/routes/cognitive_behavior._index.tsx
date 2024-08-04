@@ -6,6 +6,7 @@ import { ActionFunctionArgs, json } from "@remix-run/node";
 import { useEffect, useState } from "react";
 import { QuestionFormType } from "~/pages/questionnaires/questionnaire_type";
 import { CognitiveBehaviorView } from "~/pages/cognitive_behavior/cognitive_behavior";
+import { sleep } from "~/utility/utility_method";
 
 export const meta: MetaFunction = () => {
   return [
@@ -25,6 +26,8 @@ export const action = async ({request}: ActionFunctionArgs) => {
 
   let fetch_result = fetch(GetDomain(API.UploadCognitiveReport), 
                               {method:'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(json)});
+                              
+  await sleep(1000);
 
   return redirect('/cognitive_behavior/analysis_report?session_id='+json.session_id);
 }

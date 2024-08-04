@@ -26,6 +26,8 @@ export class StreamingUITool {
     }
 
     on_socket_callback(event_name: string, socket_data: any) {
+        console.log('on_socket_callback', event_name, socket_data)
+        
         if (event_name != 'bot') return;
 
         let streaming_data: StreamingType = socket_data;
@@ -33,6 +35,8 @@ export class StreamingUITool {
 
         if (socket_data.type == 'chunk') {
             let cache_content = this._streaming_dict.get(streaming_data.session_id);
+            console.log('cache_content', cache_content)
+
             if (cache_content == undefined) cache_content = ''
             
             final_text = cache_content + streaming_data.data;

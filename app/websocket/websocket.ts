@@ -21,7 +21,7 @@ export class WebsocketManager extends EventSystem {
         });
         
         this._socket.addEventListener("message", (event) => {
-            // console.log("Message from server ", event.data);
+            console.log("Message from server ", event.data);
 
             try {
                 let event_json = JSON.parse(event.data);

@@ -1,8 +1,7 @@
 const Domain = 'https://psycho-councel.ddns.net/'
 const Self = 'http://127.0.0.1:8842/'
 
-export const WSS = process.env.WSS_DOMAIN;
-export const Remote_WSS = 'wss://psycho-councel.ddns.net/ws'
+const Remote_WSS = 'wss://psycho-councel.ddns.net/ws'
 const Local_WS = 'ws://127.0.0.1:8842/ws'
 
 export const Basic_Docs_Template = '/docs_template/basic_template.docx'
@@ -22,7 +21,11 @@ export const API = Object.freeze({
 });
 
 export const GetDomain = function(url: string) {
-    return process.env.API_DOMAIN + url;
+    return import.meta.env.VITE_API_DOMAIN + url;
+}
+
+export const GetWSS = function() {
+    return import.meta.env.VITE_WSS_DOMAIN;
 }
 
 export const SocketEvent = Object.freeze({

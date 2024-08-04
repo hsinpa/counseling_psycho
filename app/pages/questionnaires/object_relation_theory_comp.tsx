@@ -54,7 +54,7 @@ export let RenderShortTheoryForm = function({title}: {title: string}) {
 
 export let RenderLongTheoryForm = function(theory: QuestionFormType[]) {
     const fetcher = useFetcher({ key: "add-to-bag" });
-    const socket = useContext(wsContext)
+    const socket = useContext(wsContext);
 
     let [progress, setProgress] = useState<number>(0);
     let [question_index, set_question_index] = useState<number>(0);

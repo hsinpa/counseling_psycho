@@ -36,6 +36,9 @@ export default function Analysis_Report_Page() {
         //Cache
         let session_id = searchParams.get('session_id');
 
+        console.log('session_id', session_id);
+        console.log('socket id', socket?.id);
+
         // Socket
         if (socket != null) {
             let streaming_tools = new StreamingUITool(socket);

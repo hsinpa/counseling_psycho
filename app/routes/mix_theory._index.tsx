@@ -22,11 +22,14 @@ export async function loader() {
 
 export const action = async ({request}: ActionFunctionArgs) => {
   let json = await request.json();
-  console.log(json)
 
   let fetch_data: any = {user_id: json.user_id, session_id: json.session_id, 
                         theory_id: json.selected_theory.map((x:any)=>x.id), content: json.user_info}
-  let fetch_result = fetch(GetDomain(API.UploadMixTheory), {method:'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(fetch_data)});
+  let fetch_result = await fetch(GetDomain(API.UploadMixTheory), 
+                          { method:'POST', 
+                            headers: {"Content-Type": "application/json"}, 
+                            body: JSON.stringify(fetch_data)
+                          });
   
   return redirect('/mix_theory/analysis_report?session_id='+json.session_id);
 }

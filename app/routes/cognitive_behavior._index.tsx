@@ -24,11 +24,9 @@ export async function loader() {
 export const action = async ({request}: ActionFunctionArgs) => {
   let json = await request.json();
 
-  let fetch_result = fetch(GetDomain(API.UploadCognitiveReport), 
+  let fetch_result = await fetch(GetDomain(API.UploadCognitiveReport), 
                               {method:'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(json)});
                               
-  await sleep(1000);
-
   return redirect('/cognitive_behavior/analysis_report?session_id='+json.session_id);
 }
 

@@ -7,21 +7,27 @@ import { json } from "@remix-run/react";
 export class WebsocketManager extends EventSystem {
     private _socket: WebSocket | null = null;
     private _id: string = '';
+    private _url: string;
 
     get id() {
         return this._id;
     }
 
+    constructor(url: string) {
+        super();
+        this._url = url;
+    }
+
     connect() {
         this._id = uuidv4.toString();
-        this._socket = new WebSocket(format_string(GetWSS(), [this._id]));
+        this._socket = new WebSocket(this._url);
 
         this._socket.addEventListener("open", (event) => {
             console.log('socket on connect');
         });
         
         this._socket.addEventListener("message", (event) => {
-            console.log("Message from server ", event.data);
+            // console.log("Message from server ", event.data);
 
             try {
                 let event_json = JSON.parse(event.data);

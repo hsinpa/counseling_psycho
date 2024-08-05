@@ -19,7 +19,7 @@ export const meta: MetaFunction = () => {
 
 export const action = async ({request}: ActionFunctionArgs) => {
     let json = await request.json();
-    let fetch_result = fetch(GetDomain(API.OutputCognitiveIndividual), 
+    let fetch_result = await fetch(GetDomain(API.OutputCognitiveIndividual), 
                                 {method:'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(json)});
 
     return redirect(next_url + '?session_id='+json.session_id);

@@ -24,15 +24,18 @@ export async function loader() {
 
 export const action = async ({request}: ActionFunctionArgs) => {
   let json = await request.json();
-  console.log(json)
 
   let fetch_session: any[] = [];
+  let fetch_promise: Promise<any>[] = [];
   for (let i = 0; i < json.selected_theory.length; i++) {
     let fetch_data: any = {user_id: json.user_id, session_id: uuidv4(), theory_id: json.selected_theory[i].id, content: json.user_info}
     let fetch_result = fetch(GetDomain(API.UploadMultiTheory), {method:'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(fetch_data)});
 
     fetch_session.push({theory: json.selected_theory[i], session_id: fetch_data.session_id});
+    fetch_promise.push(fetch_result);
   }
+  
+  await Promise.all(fetch_promise);
 
   let arrStr = encodeURIComponent(JSON.stringify(fetch_session));
   return redirect('/multi_theory/analysis_report?session_id='+arrStr);

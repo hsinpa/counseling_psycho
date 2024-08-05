@@ -17,7 +17,7 @@ export const meta: MetaFunction = () => {
 
 export const action = async ({request}: ActionFunctionArgs) => {
     let json = await request.json();
-    let fetch_result = fetch(GetDomain(API.UploadTheoryReport), 
+    let fetch_result = await fetch(GetDomain(API.UploadTheoryReport), 
                                 {method:'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(json)});
 
 

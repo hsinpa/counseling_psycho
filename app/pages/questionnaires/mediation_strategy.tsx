@@ -4,7 +4,7 @@ import { generate_document } from "~/utility/docs_exporter.client";
 import { useEffect, useState } from "react";
 import { Basic_Docs_Template } from "~/utility/api_static";
 
-export let MediationStrategyView = function({report } : {report: string}) {
+export let MediationStrategyView = function({report, complete } : {report: string, complete: boolean}) {
     const [docs_url, set_docs_url] = useState('');
 
     useEffect(() => {
@@ -17,7 +17,7 @@ export let MediationStrategyView = function({report } : {report: string}) {
 
     return (
         <div className="container theory_report">        
-            <button className="export_btn button" onClick={on_export_btn}>匯出檔案</button>
+            <button className="export_btn button" disabled={!complete} onClick={on_export_btn}>匯出檔案</button>
 
             <section className='report_title'>
                 <h2 className="title">治療策略報告</h2>

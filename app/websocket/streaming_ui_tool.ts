@@ -4,7 +4,7 @@ import { StreamingType } from "./websocket_type";
 
 export class StreamingUITool {
     private _websocket: WebsocketManager;
-    public callback: ((session_id: string, content: string) => void) | undefined = undefined;
+    public callback: ((session_id: string, content: string, complete: boolean) => void) | undefined = undefined;
     private _streaming_dict: Map<string, string>;
 
     constructor(websocket: WebsocketManager) {
@@ -19,7 +19,7 @@ export class StreamingUITool {
             let cache_data = localStorage.getItem(session_id);
 
             if (cache_data != null) {
-                this.callback?.(session_id, cache_data);
+                this.callback?.(session_id, cache_data, true);
                 return;
             }
         }
@@ -49,12 +49,12 @@ export class StreamingUITool {
         this._streaming_dict.set(streaming_data.session_id, final_text);
 
         if (this.callback != undefined)
-            this.callback(streaming_data.session_id, final_text);
+            this.callback(streaming_data.session_id, final_text, socket_data.type != 'chunk');
     }
 }
 
 export const socket_callback_tool_with_session = function(session_id: string, socket: WebsocketManager | undefined, 
-    callback: (session_id: string, socket_data: string) => void ) {
+    callback: (session_id: string, socket_data: string, complete: boolean) => void ) {
 
     // Socket
     if (socket != null) {
@@ -68,14 +68,14 @@ export const socket_callback_tool_with_session = function(session_id: string, so
 }
 
 export const socket_callback_tool = function(searchParams: URLSearchParams, socket: WebsocketManager | undefined, 
-                                            callback: (session_id: string, socket_data: string) => void ) {
+                                            callback: (session_id: string, socket_data: string, complete: boolean) => void ) {
     //Cache
     let session_id = searchParams.get('session_id');
 
     if (session_id != null)  {
-        socket_callback_tool_with_session(session_id, socket, (callback_session_id, data) => {
+        socket_callback_tool_with_session(session_id, socket, (callback_session_id, data, complete) => {
             if (callback_session_id == session_id)
-                callback(callback_session_id, data);
+                callback(callback_session_id, data, complete);
         });
     }
 }

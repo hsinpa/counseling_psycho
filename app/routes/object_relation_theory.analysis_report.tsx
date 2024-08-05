@@ -28,6 +28,7 @@ export default function Analysis_Report_Page() {
     let location = useLocation();
     const [report, setReport] = useState('');
     const socket = useContext(wsContext)
+    const [complete, setComplete] = useState(false);
 
     const next_url = '/object_relation_theory/mediation_strategy'
     const [searchParams, setSearchParams] = useSearchParams();
@@ -42,7 +43,8 @@ export default function Analysis_Report_Page() {
         // Socket
         if (socket != null) {
             let streaming_tools = new StreamingUITool(socket);
-            streaming_tools.callback = (callback_session_id: string, socket_data: string) => {
+            streaming_tools.callback = (callback_session_id: string, socket_data: string, p_complete: boolean) => {
+                setComplete(p_complete);
                 if (callback_session_id == session_id)
                     setReport(socket_data);
             };
@@ -56,6 +58,6 @@ export default function Analysis_Report_Page() {
     return (
     <div>
         <Header_View></Header_View>
-        <TheoryReportView report={report} individual_analysis_input={report} next_page_url={next_url}></TheoryReportView>
+        <TheoryReportView report={report} complete={complete} individual_analysis_input={report} next_page_url={next_url}></TheoryReportView>
     </div>);
 }

@@ -40,8 +40,10 @@ const StreamingContent = function() {
     const [content, setContent] = useState<string>('');
     const socket = useContext(wsContext);
     const [searchParams, setSearchParams] = useSearchParams();
+    const [complete, setComplete] = useState(false);
 
-    const on_socket_callback = function(event_name: string, socket_data: string) {
+    const on_socket_callback = function(event_name: string, socket_data: string, p_complete: boolean) {
+        setComplete(p_complete);
         let session_id = searchParams.get('session_id');
         if (session_id == event_name)
             setContent( socket_data);
@@ -71,7 +73,7 @@ const StreamingContent = function() {
 
     return (
     <div className="content">
-        <button className="button" onClick={on_export_btn}>匯出檔案</button>
+        <button className="button" disabled={!complete} onClick={on_export_btn}>匯出檔案</button>
         <pre>{content}</pre>
     </div>
 )

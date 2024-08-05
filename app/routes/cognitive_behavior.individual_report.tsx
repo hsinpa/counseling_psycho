@@ -17,16 +17,18 @@ export default function Mediation_Strategy_Page() {
     const socket = useContext(wsContext)
     const [searchParams, setSearchParams] = useSearchParams();
     const [report, setReport] = useState('');
+    const [complete, setComplete] = useState(false);
 
     useEffect(() => {
-        socket_callback_tool(searchParams, socket, (session, data_str) => {
+        socket_callback_tool(searchParams, socket, (session, data_str, p_complete) => {
             setReport(data_str);
+            setComplete(p_complete);
         } )
     }, [])
 
     return (
     <div>
         <Header_View></Header_View>
-        <MediationStrategyView report={report}></MediationStrategyView>
+        <MediationStrategyView complete={complete} report={report}></MediationStrategyView>
     </div>);
 }

@@ -17,6 +17,7 @@ export default function Mediation_Strategy_Page() {
     const [report, setReport] = useState('');
     const socket = useContext(wsContext)
     const [searchParams, setSearchParams] = useSearchParams();
+    const [complete, setComplete] = useState(false);
 
     useEffect(() => {
         //Cache
@@ -25,7 +26,8 @@ export default function Mediation_Strategy_Page() {
         // Socket
         if (socket != null) {
             let streaming_tools = new StreamingUITool(socket);
-            streaming_tools.callback = (callback_session_id: string, socket_data: string) => {
+            streaming_tools.callback = (callback_session_id: string, socket_data: string, p_complete: boolean) => {
+                setComplete(p_complete);
                 if (callback_session_id == session_id)
                     setReport(socket_data);
 
@@ -41,6 +43,6 @@ export default function Mediation_Strategy_Page() {
     return (
     <div>
         <Header_View></Header_View>
-        <MediationStrategyView report={report}></MediationStrategyView>
+        <MediationStrategyView report={report} complete={complete}></MediationStrategyView>
     </div>);
 }

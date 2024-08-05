@@ -6,8 +6,8 @@ import { Basic_Docs_Template } from "~/utility/api_static";
 import { v4 as uuidv4 } from 'uuid';
 import { wsContext } from '~/root';
 
-export let TheoryReportView = function({report, individual_analysis_input, next_page_url} : 
-    {report: string, individual_analysis_input: string, next_page_url: string}) {
+export let TheoryReportView = function({report, complete, individual_analysis_input, next_page_url} : 
+    {report: string, complete: boolean, individual_analysis_input: string, next_page_url: string}) {
     const fetcher = useFetcher({ key: "gen_mediate_strategy" });
     const [docs_url, set_docs_url] = useState('');
     const socket = useContext(wsContext)
@@ -61,7 +61,7 @@ export let TheoryReportView = function({report, individual_analysis_input, next_
 
     return (
         <div className="container theory_report">
-            <button className="export_btn button" onClick={on_export_btn}>匯出檔案</button>
+            <button className="export_btn button" disabled={!complete} onClick={on_export_btn}>匯出檔案</button>
 
             <section className='report_title'>
                 <h2 className="title">輸出個案分析報告</h2>

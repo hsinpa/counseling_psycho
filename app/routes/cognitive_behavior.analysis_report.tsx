@@ -27,6 +27,8 @@ export const action = async ({request}: ActionFunctionArgs) => {
 
 export default function Cognitiive_Report_Page() {
     const [report, setReport] = useState('');
+    const [complete, setComplete] = useState(false);
+
     const [user_input, setUserInput] = useState('');
     const socket = useContext(wsContext)
     const [searchParams, setSearchParams] = useSearchParams();
@@ -36,7 +38,8 @@ export default function Cognitiive_Report_Page() {
         let storage_user_input = localStorage.getItem('user_input_raw');
         setUserInput((storage_user_input == null) ? '' : storage_user_input  );
 
-        socket_callback_tool(searchParams, socket, (session, data_str) => {
+        socket_callback_tool(searchParams, socket, (session, data_str, p_complete: boolean) => {
+            setComplete(p_complete);
             setReport(data_str);
         } )
 
@@ -45,6 +48,6 @@ export default function Cognitiive_Report_Page() {
     return (
     <div>
         <Header_View></Header_View>
-        <TheoryReportView report={report} individual_analysis_input={user_input}  next_page_url={next_url}></TheoryReportView>
+        <TheoryReportView report={report} complete={complete} individual_analysis_input={user_input}  next_page_url={next_url}></TheoryReportView>
     </div>);
 }

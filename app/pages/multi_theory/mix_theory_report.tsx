@@ -42,7 +42,9 @@ const StreamingContent = function() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const on_socket_callback = function(event_name: string, socket_data: string) {
-        setContent( socket_data);
+        let session_id = searchParams.get('session_id');
+        if (session_id == event_name)
+            setContent( socket_data);
     }
 
     useEffect(() => {

@@ -42,8 +42,9 @@ export default function Analysis_Report_Page() {
         // Socket
         if (socket != null) {
             let streaming_tools = new StreamingUITool(socket);
-            streaming_tools.callback = (event_name: string, socket_data: string) => {
-                setReport(socket_data);
+            streaming_tools.callback = (callback_session_id: string, socket_data: string) => {
+                if (callback_session_id == session_id)
+                    setReport(socket_data);
             };
 
             if (session_id != null) {

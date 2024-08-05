@@ -72,6 +72,10 @@ export const socket_callback_tool = function(searchParams: URLSearchParams, sock
     //Cache
     let session_id = searchParams.get('session_id');
 
-    if (session_id != null) 
-        socket_callback_tool_with_session(session_id, socket, callback);
+    if (session_id != null)  {
+        socket_callback_tool_with_session(session_id, socket, (callback_session_id, data) => {
+            if (callback_session_id == session_id)
+                callback(callback_session_id, data);
+        });
+    }
 }

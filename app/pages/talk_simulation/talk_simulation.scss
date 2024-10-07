@@ -1,0 +1,27 @@
+.simulation_input_container {
+
+
+    .simulation_input_row {
+        display: flex;
+        flex-direction: row;
+
+        .simulation_input_info_text {
+            padding: 0em 0.5em;
+
+        }
+
+        .simulation_input_theme_checkbox {
+            padding: 0em 0.5em;
+            flex-grow: 2;
+            section {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 10px;
+              
+                .checkbox_item {
+                    
+                }    
+            }
+        }
+    }
+}

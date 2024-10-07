@@ -7,17 +7,19 @@ const Local_WS = 'ws://127.0.0.1:8842/ws'
 export const Basic_Docs_Template = '/docs_template/basic_template.docx'
 
 export const API = Object.freeze({
-    'GetCognitiveBehavior': 'questionnaire/get_cognitive_questions',
-    'UploadCognitiveReport': 'questionnaire/output_cognitive_report',
-    'OutputCognitiveIndividual': 'questionnaire/output_cognitive_individual',
+    'GetCognitiveBehavior': 'api/questionnaire/get_cognitive_questions',
+    'UploadCognitiveReport': 'api/questionnaire/output_cognitive_report',
+    'OutputCognitiveIndividual': 'api/questionnaire/output_cognitive_individual',
 
-    'GetObjectRelationsTheory': 'questionnaire/get_theory_questions',
-    'UploadUserQuestionnaire': 'questionnaire/output_theory_report',
-    'UploadTheoryReport': 'questionnaire/output_mediation_strategy',
+    'GetObjectRelationsTheory': 'api/questionnaire/get_theory_questions',
+    'UploadUserQuestionnaire': 'api/questionnaire/output_theory_report',
+    'UploadTheoryReport': 'api/questionnaire/output_mediation_strategy',
 
-    'GetMultiTheory': 'multi_theory/get_multi_theory',
-    'UploadMultiTheory': 'multi_theory/output_multi_theory_report',
-    'UploadMixTheory': 'multi_theory/output_mix_theory_report',
+    'GetMultiTheory': 'api/multi_theory/get_multi_theory',
+    'UploadMultiTheory': 'api/multi_theory/output_multi_theory_report',
+    'UploadMixTheory': 'api/multi_theory/output_mix_theory_report',
+
+    'GetSimulationCheckboxes': 'api/talk_simulation/get_simulation_checkboxes',
 });
 
 export const GetDomain = function(url: string) {

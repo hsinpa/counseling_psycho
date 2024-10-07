@@ -20,6 +20,7 @@ export const API = Object.freeze({
     'UploadMixTheory': 'api/multi_theory/output_mix_theory_report',
 
     'GetSimulationCheckboxes': 'api/talk_simulation/get_simulation_checkboxes',
+    'GenerateSimulationQuiz': 'api/talk_simulation/gen_simulation_quiz',
 });
 
 export const GetDomain = function(url: string) {

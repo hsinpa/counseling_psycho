@@ -23,7 +23,7 @@ type TalkSimulationState = {
 
 export const useaTalkSimulationStore = create<TalkSimulationState>()(
     immer((set) => ({
-        age: 6,
+        age: 18,
         gender: 'male',
         job: '',
         education: 'university',

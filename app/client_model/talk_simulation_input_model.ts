@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
-type TalkSimulationState = {
+type TalkSimulationInputState = {
     age: number,
     gender: string,
     job: string,
@@ -21,7 +21,7 @@ type TalkSimulationState = {
     set_sorting_reason: (reason: string) => void,
 }
 
-export const useaTalkSimulationStore = create<TalkSimulationState>()(
+export const useaTalkSimulationInputStore = create<TalkSimulationInputState>()(
     immer((set) => ({
         age: 18,
         gender: 'male',

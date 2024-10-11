@@ -22,10 +22,14 @@ export async function loader() {
 
 export const action = async ({request}: ActionFunctionArgs) => {
   let json = await request.json();
-  // let fetch_result = await fetch(GetDomain(API.GenerateSimulationQuiz), 
-  //                             {method:'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(json)});
-                              
-  return redirect('/talk_simulation/questionnaire/555222');
+  let session_id = json['session_id'];
+
+  let fetch_result = await fetch(GetDomain(API.GenerateSimulationQuiz), 
+                              {method:'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(json)});
+  
+  let fetch_json = await fetch_result.json();
+
+  return redirect('/talk_simulation/questionnaire/' + session_id);
 }
 
   

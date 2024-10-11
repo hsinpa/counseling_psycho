@@ -3,18 +3,18 @@ import './talk_simulation.scss'
 import { SimulationThemeCheckboxType } from './talk_simulation_type'
 import { useFetcher, useLoaderData } from '@remix-run/react'
 import { useContext, useEffect, useState } from 'react'
-import { useaTalkSimulationStore } from '~/client_model/talk_simulation_model'
+import { useaTalkSimulationInputStore } from '~/client_model/talk_simulation_input_model'
 import { v4 as uuidv4 } from 'uuid';
 import { wsContext } from '~/root'
 import { remix_uni_fetch } from '~/utility/utility_method'
 
 
 export let RenderTalkSimulationInputUI = function({checkboxes}: {checkboxes: SimulationThemeCheckboxType[]}) {
-    const simulationStore = useaTalkSimulationStore();
-    let set_theme_reason = useaTalkSimulationStore(s=>s.set_theme_reason);
-    let set_sorting_reason = useaTalkSimulationStore(s=>s.set_sorting_reason);
-    let sorting_reason = useaTalkSimulationStore(s=>s.sorting_reason);
-    let theme_reason = useaTalkSimulationStore(s=>s.theme_reason);
+    const simulationStore = useaTalkSimulationInputStore();
+    let set_theme_reason = useaTalkSimulationInputStore(s=>s.set_theme_reason);
+    let set_sorting_reason = useaTalkSimulationInputStore(s=>s.set_sorting_reason);
+    let sorting_reason = useaTalkSimulationInputStore(s=>s.sorting_reason);
+    let theme_reason = useaTalkSimulationInputStore(s=>s.theme_reason);
     let websocket = useContext(wsContext)
     const fetcher = useFetcher({ key: "talk_simulation_input" });
 
@@ -31,7 +31,6 @@ export let RenderTalkSimulationInputUI = function({checkboxes}: {checkboxes: Sim
             sorting_reason: sorting_reason,
             theme_reason: theme_reason,
 
-            user_id: websocket?.id,
             session_id: uuidv4()
         }
         
@@ -58,7 +57,7 @@ export let RenderTalkSimulationInputUI = function({checkboxes}: {checkboxes: Sim
 
 
 let RenderBasicInfoTextForm = function() {
-    const simulationStore = useaTalkSimulationStore();
+    const simulationStore = useaTalkSimulationInputStore();
 
     return (
     <div className="simulation_input_info_text">
@@ -108,8 +107,8 @@ let RenderBasicInfoTextForm = function() {
 
 let RenderBasicThemeCheckbox = function({checkboxes}: {checkboxes: SimulationThemeCheckboxType[]}) {
     const MAX_SELECTION = 3;
-    const set_selected_boxes = useaTalkSimulationStore(s=>s.set_checkboxes);
-    const selected_boxes = useaTalkSimulationStore(s=>s.theme_checkboxes);
+    const set_selected_boxes = useaTalkSimulationInputStore(s=>s.set_checkboxes);
+    const selected_boxes = useaTalkSimulationInputStore(s=>s.theme_checkboxes);
 
     let on_checkbox_change = function(e: React.FormEvent<HTMLInputElement>) {
         let target: HTMLInputElement = e.target as (HTMLInputElement);

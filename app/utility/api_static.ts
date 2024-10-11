@@ -19,6 +19,7 @@ export const API = Object.freeze({
     'UploadMultiTheory': 'api/multi_theory/output_multi_theory_report',
     'UploadMixTheory': 'api/multi_theory/output_mix_theory_report',
 
+    'GetSimulationTalk': 'api/talk_simulation/get_simulation_talk/{0}',
     'GetSimulationCheckboxes': 'api/talk_simulation/get_simulation_checkboxes',
     'GenerateSimulationQuiz': 'api/talk_simulation/gen_simulation_quiz',
 });

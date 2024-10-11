@@ -33,3 +33,28 @@
         }
     }
 }
+
+.sim_questionnaire_container {
+    padding: 1em 1em;
+    display: flex;
+    flex-direction: column;
+    gap:1em;
+
+    .sim_questionnaire_label {
+        p {
+            font-style: italic;
+        }
+    }
+
+    .tool_row {
+        display: flex;
+        justify-content: space-between;
+
+    }
+
+    .submit_row {
+        display: inline-flex;
+        justify-content: space-between;
+        gap: 1em;
+    }
+}

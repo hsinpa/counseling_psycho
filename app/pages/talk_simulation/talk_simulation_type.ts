@@ -16,3 +16,8 @@ export interface SimulationResultType {
     report: string
     questionnaires: SimulationQuestionnaireType[]
 }
+
+export enum SimTalkActionType {
+    report = "report", // Generate report
+    questionnaire = "questionnaire", // Create new questionnaire
+}

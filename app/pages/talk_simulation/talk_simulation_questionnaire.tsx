@@ -1,8 +1,11 @@
-import { SimulationQuestionnaireType, SimulationResultType } from "./talk_simulation_type";
+import { SimTalkActionType, SimulationQuestionnaireType, SimulationResultType } from "./talk_simulation_type";
 import './talk_simulation.scss'
 import { useaTalkSimulationQuestionStore } from "~/client_model/talk_simulation_question_model";
-import { clamp } from "~/utility/utility_method";
+import { clamp, format_string, remix_uni_fetch } from "~/utility/utility_method";
 import { API, GetDomain } from "~/utility/api_static";
+import { ReactDOM, ReactEventHandler, useContext } from "react";
+import { wsContext } from "~/root";
+import { useFetcher } from "@remix-run/react";
 
 
 let RenderTextComponent = function({question, index}: {question: SimulationQuestionnaireType, index: number}) {
@@ -35,12 +38,18 @@ let RenderNumberComponent = function({question, index}: {question: SimulationQue
         </div>)
 }
 
-let RenderToolRow = function() {
+let RenderToolRow = function({session_id}: {session_id: string}) {
+    const set_questionnaires = useaTalkSimulationQuestionStore(x=>x.set_questionnaires);
 
-    const on_ai_answer_btn = async function() {
-        const response = await fetch(GetDomain(API.GetSimulationCheckboxes));
+    const on_ai_answer_btn = async function(e: React.MouseEvent<HTMLButtonElement>) {
+        const button_dom: HTMLButtonElement = e.target as HTMLButtonElement;
+        button_dom.disabled = true;
 
-        console.log(await response.json());
+        const response = await fetch(GetDomain(format_string(API.GetSimulationAnswer, [session_id])), {method:'post'});
+        const json_result = (await response.json());
+
+        set_questionnaires(json_result);
+        button_dom.disabled = false;
     }
 
     return (<div className="tool_row">
@@ -49,14 +58,31 @@ let RenderToolRow = function() {
     </div>);
 }
 
-let RenderSubmitRow = function() {
+let RenderSubmitRow = function({session_id}: {session_id: string}) {
+    const questionnaires = useaTalkSimulationQuestionStore(x=>x.questionnaires);
+    let websocket = useContext(wsContext)
+    const fetcher = useFetcher({key: "sim_questionaire_action"});
+
+    const on_ai_answer_btn = async function(e: React.MouseEvent<HTMLButtonElement>) {
+        const button_dom: HTMLButtonElement = e.target as HTMLButtonElement;
+        const action_attr = button_dom.getAttribute('data-action');
+        let data: any = {
+            questionnaires: questionnaires,
+            session_id: session_id,
+            socket_id: websocket?.id,
+            event_id: action_attr
+        }
+
+        remix_uni_fetch(e.currentTarget, fetcher, data);
+    }
+
     return (<div className="submit_row">
-        <button className="button is-fullwidth">深入解析</button>
-        <button className="button is-fullwidth is-primary is-light">取得治療策略</button>
+        <button className="button is-fullwidth" data-action={SimTalkActionType.questionnaire} onClick={on_ai_answer_btn}>深入解析</button>
+        <button className="button is-fullwidth is-primary is-light" data-action={SimTalkActionType.report} onClick={on_ai_answer_btn}>取得治療策略</button>
     </div>);
 }
 
-export let Questionnaire_Container_View = function() {
+export let Questionnaire_Container_View = function({session_id}: {session_id: string}) {
     const questionnaires = useaTalkSimulationQuestionStore(x=>x.questionnaires);
 
     let component_doms: JSX.Element[] = [];
@@ -80,9 +106,9 @@ export let Questionnaire_Container_View = function() {
 
     return (
         <main className="sim_questionnaire_container">
-            <RenderToolRow></RenderToolRow>
+            <RenderToolRow session_id={session_id}></RenderToolRow>
             {component_doms}
-            <RenderSubmitRow></RenderSubmitRow>
+            <RenderSubmitRow session_id={session_id}></RenderSubmitRow>
         </main>
     )
 }

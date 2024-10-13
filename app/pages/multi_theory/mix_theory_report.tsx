@@ -62,7 +62,7 @@ const StreamingContent = function() {
             if (session_id != null) {
                 streaming_tools.trigger_cache_data([session_id]);
             }
-        }        
+        } 
 
         set_docs_url(window.location.origin + Basic_Docs_Template);
     }, []);

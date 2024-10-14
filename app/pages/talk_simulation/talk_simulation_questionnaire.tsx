@@ -3,8 +3,6 @@ import './talk_simulation.scss'
 import { useaTalkSimulationQuestionStore } from "~/client_model/talk_simulation_question_model";
 import { clamp, format_string, remix_uni_fetch } from "~/utility/utility_method";
 import { API, GetDomain } from "~/utility/api_static";
-import { ReactDOM, ReactEventHandler, useContext } from "react";
-import { wsContext } from "~/root";
 import { useFetcher } from "@remix-run/react";
 
 
@@ -60,7 +58,6 @@ let RenderToolRow = function({session_id}: {session_id: string}) {
 
 let RenderSubmitRow = function({session_id}: {session_id: string}) {
     const questionnaires = useaTalkSimulationQuestionStore(x=>x.questionnaires);
-    let websocket = useContext(wsContext)
     const fetcher = useFetcher({key: "sim_questionaire_action"});
 
     const on_ai_answer_btn = async function(e: React.MouseEvent<HTMLButtonElement>) {
@@ -69,7 +66,6 @@ let RenderSubmitRow = function({session_id}: {session_id: string}) {
         let data: any = {
             questionnaires: questionnaires,
             session_id: session_id,
-            socket_id: websocket?.id,
             event_id: action_attr
         }
 

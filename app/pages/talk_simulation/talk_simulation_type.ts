@@ -13,7 +13,8 @@ export interface SimulationQuestionnaireType {
 export interface SimulationResultType {
     id: string, 
     process_count: number, 
-    report: string
+    report: string,
+    report_flag: boolean,
     questionnaires: SimulationQuestionnaireType[]
 }
 

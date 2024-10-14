@@ -20,8 +20,8 @@ export const action = async ({request}: ActionFunctionArgs) => {
         break;
 
         case SimTalkActionType.report: {
-            let fetch_result = await fetch(GetDomain(API.GenerateSimulationReport), 
-            {method:'POST', headers: {"Content-Type": "application/json", "accept": "application/json"}, body: JSON.stringify(json)});
+            let fetch_result = await fetch(GetDomain(API.UpdateSimulationQuiz), 
+            {method:'PUT', headers: {"Content-Type": "application/json", "accept": "application/json"}, body: JSON.stringify(json)});
 
             return redirect('/talk_simulation/report/' + session_id);
         }

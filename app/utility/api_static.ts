@@ -24,6 +24,7 @@ export const API = Object.freeze({
     'GetSimulationAnswer': 'api/talk_simulation/gen_simulation_answer/{0}',
 
     'GenerateSimulationQuiz': 'api/talk_simulation/gen_simulation_quiz',
+    'UpdateSimulationQuiz': 'api/talk_simulation/update_simulation_quiz',
     'GenerateSimulationReport': 'api/talk_simulation/sgen_simulation_report',
 });
 

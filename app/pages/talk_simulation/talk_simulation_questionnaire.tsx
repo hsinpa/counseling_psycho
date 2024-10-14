@@ -58,6 +58,7 @@ let RenderToolRow = function({session_id}: {session_id: string}) {
 
 let RenderSubmitRow = function({session_id}: {session_id: string}) {
     const questionnaires = useaTalkSimulationQuestionStore(x=>x.questionnaires);
+    const process_count = useaTalkSimulationQuestionStore(x=>x.process_count);
     const fetcher = useFetcher({key: "sim_questionaire_action"});
 
     const on_ai_answer_btn = async function(e: React.MouseEvent<HTMLButtonElement>) {
@@ -73,7 +74,7 @@ let RenderSubmitRow = function({session_id}: {session_id: string}) {
     }
 
     return (<div className="submit_row">
-        <button className="button is-fullwidth" data-action={SimTalkActionType.questionnaire} onClick={on_ai_answer_btn}>深入解析</button>
+        <button key={process_count} className="button is-fullwidth" data-action={SimTalkActionType.questionnaire} onClick={on_ai_answer_btn} disabled={process_count >= 3}>深入解析</button>
         <button className="button is-fullwidth is-primary is-light" data-action={SimTalkActionType.report} onClick={on_ai_answer_btn}>取得治療策略</button>
     </div>);
 }

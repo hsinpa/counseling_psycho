@@ -45,17 +45,22 @@ const StreamingContent = function({fixed_cache, export_docs_title}: {fixed_cache
 }
 
 export let Questionnaire_Report_View = function({simulation_result}: {simulation_result: SimulationResultType}) {
-    const socket = useContext(wsContext);
     const params = useParams();
     const session_id = params['id'];
-
-    let content = simulation_result.report;
+    const socket = useContext(wsContext);
+    const [content, set_content] = useState(simulation_result.report)
 
     useEffect(() => {
+        console.log(socket);
+        console.log(simulation_result);
+        console.log(simulation_result.report_flag && socket != null);
+
         if ( ((simulation_result.report == '' || simulation_result.report == null) ||
         (simulation_result.report_flag)) && socket != null ){
-            content = ''
-        
+            set_content('');
+
+        console.log('FIRE');
+
         fetch(GetDomain(API.GenerateSimulationReport), {method: 'POST', headers:{"Content-Type": "application/json"},
             body: JSON.stringify({
             session_id: session_id,

@@ -24,6 +24,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
   let json = await request.json();
   let session_id = json['session_id'];
 
+  console.log("GenerateSimulationQuiz");
   let fetch_result = await fetch(GetDomain(API.GenerateSimulationQuiz), 
                               {method:'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(json)});
   

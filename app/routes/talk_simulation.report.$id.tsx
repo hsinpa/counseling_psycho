@@ -16,7 +16,6 @@ export async function loader({params}: LoaderFunctionArgs) {
 
 export default function SimReport_View() {
     const simulation_result: SimulationResultType = useLoaderData<typeof loader>();
-
     return (
         <div>
             <Header_View></Header_View>

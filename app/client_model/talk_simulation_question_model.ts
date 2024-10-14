@@ -4,7 +4,9 @@ import { SimulationQuestionnaireType } from "~/pages/talk_simulation/talk_simula
 
 type TalkSimulationQuestionState = {
     questionnaires: SimulationQuestionnaireType[],
+    process_count: number,
 
+    set_process_count: (c: number) => void,
     set_questionnaires: (questionnaires: SimulationQuestionnaireType[]) => void,
     answer_questionnaire: (target_index: number, answer: string) => void,
 }
@@ -12,7 +14,11 @@ type TalkSimulationQuestionState = {
 export const useaTalkSimulationQuestionStore = create<TalkSimulationQuestionState>()(
     immer((set) => ({
         questionnaires: [],
-        
+        process_count: 0,
+
+        set_process_count: (c: number) => set((state) => {
+            state.process_count = c;
+        }),
         set_questionnaires: (questionnaires: SimulationQuestionnaireType[]) => set((state) => {
             state.questionnaires = questionnaires;
         }),

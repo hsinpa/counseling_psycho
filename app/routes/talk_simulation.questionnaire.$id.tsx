@@ -16,6 +16,9 @@ export const action = async ({request}: ActionFunctionArgs) => {
 
     switch (event_id) {
         case SimTalkActionType.questionnaire: {
+            console.log(format_string(API.IterateSimulationQuiz, [session_id]))
+            let fetch_result = await fetch(GetDomain(format_string(API.IterateSimulationQuiz, [session_id])), {method:'POST'});
+            return redirect('/talk_simulation/questionnaire/' + session_id);
         }
         break;
 
@@ -41,6 +44,8 @@ export async function loader({params}: LoaderFunctionArgs) {
 export default function Questionnaire_View() {
     const params = useParams();
     const set_questionnaires = useaTalkSimulationQuestionStore(x=>x.set_questionnaires);
+    const set_process_count = useaTalkSimulationQuestionStore(x=>x.set_process_count);
+
     let id = params['id'];
     const simulation_result: SimulationResultType = useLoaderData<typeof loader>();
 
@@ -49,6 +54,7 @@ export default function Questionnaire_View() {
     useEffect(() => {
         console.log(simulation_result);
         set_questionnaires(simulation_result.questionnaires);
+        set_process_count(simulation_result.process_count);
     }, [simulation_result]);
 
     return (

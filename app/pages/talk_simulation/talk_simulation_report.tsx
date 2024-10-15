@@ -1,76 +1,43 @@
-import { useParams, useSearchParams } from "@remix-run/react";
+import { useFetcher, useParams, useSearchParams } from "@remix-run/react";
 import { useContext, useEffect, useState } from "react";
 import { wsContext } from "~/root";
 import { API, Basic_Docs_Template, GetDomain } from "~/utility/api_static";
-import { generate_document } from "~/utility/docs_exporter.client";
-import { StreamingUITool } from "~/websocket/streaming_ui_tool";
 import { SimulationResultType } from "./talk_simulation_type";
-
-const StreamingContent = function({fixed_cache, export_docs_title}: {fixed_cache: string, export_docs_title: string}) {
-    const [docs_url, set_docs_url] = useState<string>('');
-    const [content, setContent] = useState<string>('');
-    const socket = useContext(wsContext);
-    const params = useParams();
-    const session_id = params['id'];
-    const [complete, setComplete] = useState(false);
-
-    const on_socket_callback = function(event_name: string, socket_data: string, p_complete: boolean) {
-        setComplete(p_complete);
-        if (session_id == event_name)
-            setContent(socket_data);
-    }
-
-    useEffect(() => {
-        setContent(fixed_cache);
-
-        // Socket
-        if (socket != null) {
-            let streaming_tools = new StreamingUITool(socket);
-            streaming_tools.callback = on_socket_callback;
-        }
-
-        set_docs_url(window.location.origin + Basic_Docs_Template);
-    }, [fixed_cache]);
-
-    const on_export_btn = function() {
-        generate_document(docs_url, export_docs_title + ' - ', content);
-    }
-
-    return (
-    <div className="content">
-        <button className="button" disabled={!complete} onClick={on_export_btn}>匯出檔案</button>
-        <pre>{content}</pre>
-    </div>
-)
-}
+import { StreamingContentView } from "../layout/streaming_content";
+import './talk_simulation.scss'
+import { remix_uni_fetch } from "~/utility/utility_method";
 
 export let Questionnaire_Report_View = function({simulation_result}: {simulation_result: SimulationResultType}) {
     const params = useParams();
-    const session_id = params['id'];
+    let session_id = params['id'];
     const socket = useContext(wsContext);
     const [content, set_content] = useState(simulation_result.report)
+    const fetcher = useFetcher({ key: "talk_simulation_report" });
+
+    if (session_id == undefined) session_id = '';
 
     useEffect(() => {
-        console.log(socket);
-        console.log(simulation_result);
-        console.log(simulation_result.report_flag && socket != null);
-
         if ( ((simulation_result.report == '' || simulation_result.report == null) ||
-        (simulation_result.report_flag)) && socket != null ){
+        (simulation_result.report_flag)) && socket?.register_session(session_id) ){
             set_content('');
 
-        console.log('FIRE');
+            fetch(GetDomain(API.GenerateSimulationReport), {method: 'POST', headers:{"Content-Type": "application/json"},
+                body: JSON.stringify({
+                session_id: session_id,
+                socket_id: socket?.id
+            })});
+        }
 
-        fetch(GetDomain(API.GenerateSimulationReport), {method: 'POST', headers:{"Content-Type": "application/json"},
-            body: JSON.stringify({
-            session_id: session_id,
-            socket_id: socket?.id
-        })});
-    }
-
+        return (() => {
+            socket?.deregister_session(session_id)
+        });
     }, [])
 
-    return (<div>
-        <StreamingContent fixed_cache={content} export_docs_title="詳解"></StreamingContent>
+    return (<div className="sim_report_container">
+        <StreamingContentView session_id={session_id} default_content={content} export_docs_title="詳解"></StreamingContentView>
+    
+        <button className="button is-fullwidth re-gen-questionnaire-btn is-link is-outlined" onClick={(e) => {                
+                remix_uni_fetch(e.currentTarget, fetcher, {session_id: session_id});
+        }}>深入解析</button>
     </div>)
 }

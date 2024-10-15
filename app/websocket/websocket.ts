@@ -8,6 +8,7 @@ export class WebsocketManager extends EventSystem {
     private _socket: WebSocket | null = null;
     private _id: string = '';
     private _url: string;
+    private session_set: Set<string> = new Set(); // To prevent multiple session socket, running at the same time
 
     get id() {
         return this._id;
@@ -43,6 +44,19 @@ export class WebsocketManager extends EventSystem {
                 console.error('Socket message parse', e)
             }
         });
+    }
+
+    register_session(session_id: string) {
+        if (this.session_set.has(session_id)) {
+            return false;
+        }
+
+        this.session_set.add(session_id);
+        return true;
+    }
+
+    deregister_session(session_id: string) {
+        this.session_set.delete(session_id);
     }
 }
 

@@ -4,8 +4,8 @@ import Header_View from "~/pages/layout/header";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "諮商師推薦系統" },
-    { name: "description", content: "諮商師推薦系統" },
+    { title: "諮商師輔助系統" },
+    { name: "description", content: "諮商師輔助系統" },
   ];
 };
 

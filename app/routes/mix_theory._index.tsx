@@ -16,8 +16,11 @@ export const meta: MetaFunction = () => {
 
 export async function loader() {
   const response = await fetch(GetDomain(API.GetMultiTheory));
-      
-  return await response.json();
+  let theories: TheoriesType = await response.json();
+
+  theories.theory.push({id: 'auto_select', name:'系統匹配', dimension: []});
+
+  return theories;
 }
 
 export const action = async ({request}: ActionFunctionArgs) => {

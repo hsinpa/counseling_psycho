@@ -6,14 +6,14 @@
     justify-content: center;
     
     padding: 1.5em 0em;
-    background-color: v.$color_blue;
+    background-color: v.$color_warm_white;
     
     h1 {
-        color: white;
+        color: #031b4e;
         font-size: 2.5em;
         font-weight: 700;
         span {
-            color: #031b4e; 
+            color: v.$color_blue; 
         }
     }
 }

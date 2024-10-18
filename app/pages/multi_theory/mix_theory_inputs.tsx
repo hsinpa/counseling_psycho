@@ -10,15 +10,34 @@ import { v4 as uuidv4 } from 'uuid';
 export const MultiTheoryChoices = function({theories}: {theories: TheoriesType}) {
     let set_theory_list = useMultiTheoryStore(x=>x.set_theory_list);
     let selected_theory = useMultiTheoryStore(x=>x.selected_theory);
+    const select_all_key = 'auto_select';
 
     let on_select = function(e: React.FormEvent<HTMLInputElement>) {
+        let target_dom: HTMLInputElement = e.target as HTMLInputElement;
         let checkboxes_dom = document.querySelectorAll<HTMLInputElement>('.thoery_checkbox');
+
+        if (target_dom.value == select_all_key) {
+            let t = theories.theory.find(x=>x.id == select_all_key);
+            for (let i = 0; i < checkboxes_dom.length; i++) {
+                checkboxes_dom[i].checked = (checkboxes_dom[i].value == select_all_key);
+            }
+
+            if (t != null) set_theory_list([t]);
+            return;
+        }
 
         let theory_checkboxes: TheoryType[] = []; 
         for (let i = 0; i < checkboxes_dom.length; i++) {
+            let t = theories.theory.find(x=>x.id == checkboxes_dom[i].value);
+            if (t == null) continue;
+
+            if (t.id==select_all_key) {
+                checkboxes_dom[i].checked = false;
+                continue;
+            }
+
             if (theory_checkboxes.length < 3 && checkboxes_dom[i].checked) {
-                let t = theories.theory.find(x=>x.id == checkboxes_dom[i].value);
-                if (t != null) theory_checkboxes.push(t);
+                theory_checkboxes.push(t);
             } else {
                 checkboxes_dom[i].checked = false;
             }
@@ -115,6 +134,7 @@ export const MixTheoryInputView = function({theory}: {theory: TheoriesType}) {
                 <MultiTheoryChoices theories={theory}></MultiTheoryChoices>
                 <MultiTheoryTextarea></MultiTheoryTextarea>
             </div>
+
             <button className='button is-fullwidth is-primary is-light'
             disabled={selected_theory.length <= 0 || user_info.length < 10}
             onClick={on_analyze_click}

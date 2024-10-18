@@ -11,15 +11,14 @@ export let Questionnaire_Report_View = function({simulation_result}: {simulation
     const params = useParams();
     let session_id = params['id'];
     const socket = useContext(wsContext);
-    const [content, set_content] = useState(simulation_result.report)
     const fetcher = useFetcher({ key: "talk_simulation_report" });
 
     if (session_id == undefined) session_id = '';
+    const default_content = ((simulation_result.report == '' || simulation_result.report == null) || (simulation_result.report_flag)) ? '' : simulation_result.report;
 
     useEffect(() => {
         if ( ((simulation_result.report == '' || simulation_result.report == null) ||
-        (simulation_result.report_flag)) && socket?.register_session(session_id) ){
-            set_content('');
+        (simulation_result.report_flag)) ) {
 
             fetch(GetDomain(API.GenerateSimulationReport), {method: 'POST', headers:{"Content-Type": "application/json"},
                 body: JSON.stringify({
@@ -27,14 +26,10 @@ export let Questionnaire_Report_View = function({simulation_result}: {simulation
                 socket_id: socket?.id
             })});
         }
-
-        return (() => {
-            socket?.deregister_session(session_id)
-        });
     }, [])
 
     return (<div className="sim_report_container">
-        <StreamingContentView session_id={session_id} default_content={content} export_docs_title="詳解"></StreamingContentView>
+        <StreamingContentView session_id={session_id} default_content={default_content} export_docs_title="詳解"></StreamingContentView>
     
         <button className="button is-fullwidth re-gen-questionnaire-btn is-link is-outlined" onClick={(e) => {                
                 remix_uni_fetch(e.currentTarget, fetcher, {session_id: session_id});

@@ -17,9 +17,6 @@ export const StreamingContentView = function({session_id, default_content, expor
             setComplete(p_complete);
             if (session_id == event_name)
                 setContent(socket_data);
-
-            if (p_complete)
-                socket?.deregister_session(session_id)
         }
     
         useEffect(() => {

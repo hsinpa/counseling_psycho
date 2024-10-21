@@ -16,19 +16,20 @@ export const action = async ({request}: ActionFunctionArgs) => {
 
     switch (event_id) {
         case SimTalkActionType.questionnaire: {
-            console.log(format_string(API.IterateSimulationQuiz, [session_id]))
-            let fetch_result = await fetch(GetDomain(format_string(API.IterateSimulationQuiz, [session_id])), {method:'POST'});
+            let update_fetch = await fetch(GetDomain(API.UpdateSimulationQuiz), 
+            {method:'PUT', headers: {"Content-Type": "application/json", "accept": "application/json"}, body: JSON.stringify(json)});
+
+            let iterate_fetch_result = await fetch(GetDomain(format_string(API.IterateSimulationQuiz, [session_id])), {method:'POST'});
+            
             return redirect('/talk_simulation/questionnaire/' + session_id);
         }
-        break;
 
         case SimTalkActionType.report: {
-            let fetch_result = await fetch(GetDomain(API.UpdateSimulationQuiz), 
+            let update_fetch = await fetch(GetDomain(API.UpdateSimulationQuiz), 
             {method:'PUT', headers: {"Content-Type": "application/json", "accept": "application/json"}, body: JSON.stringify(json)});
 
             return redirect('/talk_simulation/report/' + session_id);
         }
-        break;
     }
       
     return ''

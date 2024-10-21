@@ -28,8 +28,6 @@ export const action = async ({request}: ActionFunctionArgs) => {
   let fetch_result = await fetch(GetDomain(API.GenerateSimulationQuiz), 
                               {method:'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify(json)});
   
-  let fetch_json = await fetch_result.json();
-
   return redirect('/talk_simulation/questionnaire/' + session_id);
 }
 

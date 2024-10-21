@@ -28,13 +28,18 @@ export const action = async ({request}: ActionFunctionArgs) => {
 
   let fetch_data: any = {user_id: json.user_id, session_id: json.session_id, 
                         theory_id: json.selected_theory.map((x:any)=>x.id), content: json.user_info}
+
   let fetch_result = await fetch(GetDomain(API.UploadMixTheory), 
                           { method:'POST', 
                             headers: {"Content-Type": "application/json"}, 
                             body: JSON.stringify(fetch_data)
                           });
-  
-  return redirect('/mix_theory/analysis_report?session_id='+json.session_id);
+
+  let fetch_json = await fetch_result.json();
+
+  let arrStr = encodeURIComponent(JSON.stringify(fetch_json.tokens));
+
+  return redirect(`/mix_theory/analysis_report?session_id=${json.session_id}&tokens=${arrStr}`);
 }
 
 export default function Mix_Theory_Input_Page() {

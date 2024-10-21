@@ -38,4 +38,5 @@ export interface MixTheoryResp {
     theory_id: string[],
     theory_name: string[],
     id: string
+    tokens: string[]
 }

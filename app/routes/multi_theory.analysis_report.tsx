@@ -26,8 +26,6 @@ export default function Analysis_Report_Page() {
         if (session_id_list_raw != null) {
             let session_id_list: any[] = JSON.parse(session_id_list_raw);
 
-            console.log(session_id_list)
-
             let theory_reports: TheoryResp[] = session_id_list.map(x => { return {
                 content: '', 
                 theory_id: x.theory.id, 
@@ -45,17 +43,10 @@ export default function Analysis_Report_Page() {
 
                     cache_reports[report_index].content = data_str;
                     setReport([...cache_reports]);
-                } )   
+                } )
             }
         }
 
-        // let report_str = localStorage.getItem('user_report');
-
-        // if (report_str != null) {
-        //     let report_json = JSON.parse(report_str);
-        //     console.log(report_json)
-        //     setReport(report_json);
-        // }
         return () => {
             cache_reports = []
         }

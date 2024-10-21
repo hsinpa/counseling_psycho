@@ -5,7 +5,7 @@ import { Basic_Docs_Template, SocketEvent } from "~/utility/api_static";
 import { generate_document } from "~/utility/docs_exporter.client";
 import { wsContext } from "~/root";
 
-const MultiTheoryTabs = function({theories, active_index, callback}:
+export const MultiTheoryTabs = function({theories, active_index, callback}:
         {theories: TheoryResp[], active_index: number, callback: React.Dispatch<React.SetStateAction<number>>}) {
     
     let list_dom = theories.map( (x, i)=> <li onClick={() => {callback(i)}} key={x.theory_id}
@@ -21,7 +21,7 @@ const MultiTheoryTabs = function({theories, active_index, callback}:
     )
 }
 
-const MultiContent = function({theory}: {theory: TheoryResp }) {
+export const MultiContent = function({theory}: {theory: TheoryResp }) {
     const [docs_url, set_docs_url] = useState<string>('');
 
     useEffect(() => {

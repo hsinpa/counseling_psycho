@@ -1,10 +1,11 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import { Basic_Docs_Template, SocketEvent } from "~/utility/api_static";
 import { generate_document } from "~/utility/docs_exporter.client";
-import { MixTheoryResp } from "../questionnaires/questionnaire_type";
+import { MixTheoryResp, TheoryResp } from "../questionnaires/questionnaire_type";
 import { wsContext } from "~/root";
 import { StreamingUITool } from "~/websocket/streaming_ui_tool";
 import { useSearchParams } from "@remix-run/react";
+import { MultiContent, MultiTheoryTabs } from "./multi_theory_report";
 
 const MixContent = function({theory}: {theory: MixTheoryResp }) {
     if (theory == null || theory.content == null)
@@ -79,9 +80,11 @@ const StreamingContent = function() {
 )
 }
 
-export const MixTheoryReportView = function({mix_thoery}: {mix_thoery: MixTheoryResp}) {
+export const MixTheoryReportView = function({mix_thoery}: {mix_thoery: TheoryResp[]}) {
+    const [active_thoery_index, set_theory_index] = useState<number>(0);
 
     return (<div className="container multi_theory_report">
-        <StreamingContent></StreamingContent>
+        <MultiTheoryTabs theories={mix_thoery} active_index={active_thoery_index} callback={set_theory_index}></MultiTheoryTabs>
+        <MultiContent theory={mix_thoery[active_thoery_index]}></MultiContent>
     </div>)
 }

@@ -4,8 +4,8 @@ import { TheoriesType, TheoryType } from '../questionnaires/questionnaire_type';
 import { redirect, useFetcher, useNavigate } from '@remix-run/react';
 import { useContext, useEffect } from 'react';
 import { MultiTheoryTextarea } from './multi_theory_inputs';
-import { wsContext } from '~/root';
 import { v4 as uuidv4 } from 'uuid';
+import { wsContext } from '~/root';
 
 export const MultiTheoryChoices = function({theories}: {theories: TheoriesType}) {
     let set_theory_list = useMultiTheoryStore(x=>x.set_theory_list);

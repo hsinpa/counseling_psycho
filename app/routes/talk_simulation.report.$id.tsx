@@ -1,5 +1,6 @@
 import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { redirect, useLoaderData, useParams } from "@remix-run/react";
+import { Email_Hint_Comp } from "~/pages/layout/email_hint_comp";
 import Header_View from "~/pages/layout/header";
 import { Questionnaire_Report_View } from "~/pages/talk_simulation/talk_simulation_report";
 import { SimulationResultType } from "~/pages/talk_simulation/talk_simulation_type";
@@ -30,6 +31,7 @@ export default function SimReport_View() {
         <div>
             <Header_View></Header_View>
             <Questionnaire_Report_View simulation_result={simulation_result}></Questionnaire_Report_View>
+            <Email_Hint_Comp></Email_Hint_Comp>
         </div>
     )
 }

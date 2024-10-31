@@ -8,6 +8,7 @@ import { QuestionFormType, TheoriesType } from "~/pages/questionnaires/questionn
 import { CognitiveBehaviorView } from "~/pages/cognitive_behavior/cognitive_behavior";
 import { MultiTheoryInputView } from "~/pages/multi_theory/multi_theory_inputs";
 import { v4 as uuidv4 } from 'uuid';
+import { Email_Hint_Comp } from "~/pages/layout/email_hint_comp";
 
 export const meta: MetaFunction = () => {
   return [
@@ -55,6 +56,8 @@ export const action = async ({request}: ActionFunctionArgs) => {
         <div>
             <Header_View></Header_View>
             <MultiTheoryInputView theory={theories}></MultiTheoryInputView>
+            <Email_Hint_Comp></Email_Hint_Comp>
+
         </div>
     );
   }

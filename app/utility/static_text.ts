@@ -29,3 +29,7 @@ export const USER_INFO_TEXT = `用戶性別: {gender}
 export const THEORY_REPORT_TEXT = `
 心理師問題: {question}
 用戶回答: {user_answer}`;
+
+export const SETTING = {
+    MAX_TOKEN: 1500
+}

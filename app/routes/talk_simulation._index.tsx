@@ -1,6 +1,7 @@
 import type { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
 import { redirect, useLoaderData } from "@remix-run/react";
 import { useEffect, useState } from "react";
+import { Email_Hint_Comp } from "~/pages/layout/email_hint_comp";
 import Header_View from "~/pages/layout/header";
 import { RenderTalkSimulationInputUI } from "~/pages/talk_simulation/talk_simulation_input";
 import { SimulationThemeCheckboxType } from "~/pages/talk_simulation/talk_simulation_type";
@@ -45,6 +46,8 @@ export default function Talk_Simulation_Input_Page() {
         <div className="object_relation_theory">
             <Header_View></Header_View>
             <RenderTalkSimulationInputUI checkboxes={info_checkboxes}></RenderTalkSimulationInputUI>
+            <Email_Hint_Comp></Email_Hint_Comp>
+
         </div>
     );
 }

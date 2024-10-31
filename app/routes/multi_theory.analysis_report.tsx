@@ -6,6 +6,7 @@ import { TheoryResp } from "~/pages/questionnaires/questionnaire_type";
 import { MultiTheoryReportView } from "~/pages/multi_theory/multi_theory_report";
 import { wsContext } from "~/root";
 import { socket_callback_tool, socket_callback_tool_with_session } from "~/websocket/streaming_ui_tool";
+import { Email_Hint_Comp } from "~/pages/layout/email_hint_comp";
 
 export const meta: MetaFunction = () => {
     return [
@@ -56,5 +57,7 @@ export default function Analysis_Report_Page() {
     <div>
         <Header_View></Header_View>
         <MultiTheoryReportView theories={report}></MultiTheoryReportView>
+        <Email_Hint_Comp></Email_Hint_Comp>
+
     </div>);
 }

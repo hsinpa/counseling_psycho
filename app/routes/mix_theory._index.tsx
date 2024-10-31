@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import { QuestionFormType, TheoriesType } from "~/pages/questionnaires/questionnaire_type";
 import { MixTheoryInputView } from "~/pages/multi_theory/mix_theory_inputs";
 import { wsContext } from "~/root";
+import { Email_Hint_Comp } from "~/pages/layout/email_hint_comp";
 
 export const meta: MetaFunction = () => {
   return [
@@ -56,6 +57,8 @@ export default function Mix_Theory_Input_Page() {
         <div>
             <Header_View></Header_View>
             <MixTheoryInputView theory={theories}></MixTheoryInputView>
+            <Email_Hint_Comp></Email_Hint_Comp>
+
         </div>
     );
   }

@@ -44,9 +44,10 @@ export let RenderTalkSimulationInputUI = function({checkboxes}: {checkboxes: Sim
                 <RenderBasicThemeCheckbox checkboxes={checkboxes}></RenderBasicThemeCheckbox>
             </div>
             <br></br>
-            <div className="simulation_input_row">
+            <div>
                  <RenderTextarea title='選擇這些主題的原因:' textarea_val={theme_reason} on_textarea_change={set_theme_reason} ></RenderTextarea>
-                 <RenderTextarea title='這樣排序的原因:' textarea_val={sorting_reason} on_textarea_change={set_sorting_reason} ></RenderTextarea>
+                 <br></br>
+                 <RenderTextarea title='個案資料:' textarea_val={sorting_reason} on_textarea_change={set_sorting_reason} ></RenderTextarea>
             </div>
 
             <br></br>

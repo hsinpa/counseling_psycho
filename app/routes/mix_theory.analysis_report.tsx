@@ -5,6 +5,7 @@ import { MixTheoryResp, TheoryResp } from "~/pages/questionnaires/questionnaire_
 import { MixTheoryReportView } from "~/pages/multi_theory/mix_theory_report";
 import { socket_callback_tool_with_session } from "~/websocket/streaming_ui_tool";
 import { wsContext } from "~/root";
+import { Email_Hint_Comp } from "~/pages/layout/email_hint_comp";
 
 export const meta: MetaFunction = () => {
     return [
@@ -54,5 +55,6 @@ export default function Analysis_Report_Page() {
     <div>
         <Header_View></Header_View>
         <MixTheoryReportView mix_thoery={report}></MixTheoryReportView>
+        <Email_Hint_Comp></Email_Hint_Comp>
     </div>);
 }

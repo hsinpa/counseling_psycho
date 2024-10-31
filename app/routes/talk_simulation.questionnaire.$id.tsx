@@ -2,6 +2,7 @@ import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { redirect, useLoaderData, useParams } from "@remix-run/react";
 import { useEffect } from "react";
 import { useaTalkSimulationQuestionStore } from "~/client_model/talk_simulation_question_model";
+import { Email_Hint_Comp } from "~/pages/layout/email_hint_comp";
 import Header_View from "~/pages/layout/header";
 import { Questionnaire_Container_View } from "~/pages/talk_simulation/talk_simulation_questionnaire";
 import { SimTalkActionType, SimulationResultType } from "~/pages/talk_simulation/talk_simulation_type";
@@ -62,6 +63,8 @@ export default function Questionnaire_View() {
         <div>
             <Header_View></Header_View>
             <Questionnaire_Container_View session_id={id}></Questionnaire_Container_View>
+            <Email_Hint_Comp></Email_Hint_Comp>
+
         </div>
     )
 }

@@ -1,9 +1,11 @@
 import { useMultiTheoryStore } from '~/client_model/multi_theory_model';
 import './multi_theory.scss'
 import { TheoriesType, TheoryType } from '../questionnaires/questionnaire_type';
-import { useFetcher, useNavigate } from '@remix-run/react';
-import { useContext, useEffect } from 'react';
+import { useFetcher } from '@remix-run/react';
+import { Fragment, useContext, useEffect } from 'react';
 import { wsContext } from '~/root';
+import llamaTokenizer from 'llama-tokenizer-js'
+import { SETTING } from '~/utility/static_text';
 
 export const MultiTheoryChoices = function({theories}: {theories: TheoriesType}) {
     let set_theory_list = useMultiTheoryStore(x=>x.set_theory_list);
@@ -38,10 +40,21 @@ export const MultiTheoryChoices = function({theories}: {theories: TheoriesType})
 }
 
 export const MultiTheoryTextarea = function() {
-    let set_user_info = useMultiTheoryStore(x=>x.set_user_info);
+    let theory_store = useMultiTheoryStore();
 
     let on_textarea_change = function(e: React.FormEvent<HTMLTextAreaElement>) {
-        set_user_info(e.currentTarget.value);
+        let textarea: HTMLTextAreaElement = e.currentTarget;
+        let token_size = llamaTokenizer.encode(e.currentTarget.value).length;
+        
+        if (token_size > SETTING.MAX_TOKEN) {
+            theory_store.set_word_validation(true);
+            textarea.style.color = 'red';
+        } else {
+            theory_store.set_word_validation(false);
+            textarea.style.color = 'black';
+        }
+
+        theory_store.set_user_info(e.currentTarget.value);
     }
 
     let example_textarea = `範例
@@ -50,6 +63,10 @@ export const MultiTheoryTextarea = function() {
 擔心孩子長大後生活空虛。曾因宗教問題與父母疏遠，
 現在追求個人成長和定位，考慮接受心理治療，但害怕治療過程中的發現。
 希望找到生活的意義和方向，但充滿恐懼和不安。`;
+
+    let error_message_dom = <Fragment></Fragment>
+    if (theory_store.word_validation)
+        error_message_dom = (<div><p className="tag is-danger is-light">超過字數限制</p></div>)
 
     return (
     <div className="column is-two-thirds">
@@ -62,7 +79,9 @@ export const MultiTheoryTextarea = function() {
         </section>
 
         <div>
-            <textarea className="textarea" onChange={on_textarea_change} placeholder="個人資料">
+            {error_message_dom}
+
+            <textarea className="textarea" value={theory_store.user_info} onChange={on_textarea_change} placeholder="個人資料">
             </textarea>
         </div>
     </div>)
@@ -74,6 +93,7 @@ export const MultiTheoryInputView = function({theory}: {theory: TheoriesType}) {
     let user_info = useMultiTheoryStore(x=>x.user_info);
     const fetcher = useFetcher({ key: "multi_theory_report" });
     let websocket = useContext(wsContext)
+    let theory_store = useMultiTheoryStore();
 
     let on_analyze_click = function(e: React.MouseEvent<HTMLButtonElement>) {
         let data: any = {
@@ -99,6 +119,8 @@ export const MultiTheoryInputView = function({theory}: {theory: TheoriesType}) {
     }
 
     useEffect(() => {
+        theory_store.set_user_info('');
+        theory_store.set_word_validation(false);
         set_theory([]);
     }, [])
 
@@ -116,7 +138,7 @@ export const MultiTheoryInputView = function({theory}: {theory: TheoriesType}) {
                 <MultiTheoryTextarea></MultiTheoryTextarea>
             </div>
             <button className='button is-fullwidth is-primary is-light'
-            disabled={selected_theory.length <= 0 || user_info.length < 10}
+            disabled={selected_theory.length <= 0 || user_info.length < 10 || theory_store.word_validation}
             onClick={on_analyze_click}
             >開始分析</button>
         </div>

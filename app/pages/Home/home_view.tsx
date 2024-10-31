@@ -17,6 +17,8 @@ export let render_action_comp = function(title: string, content: string, link: s
 export default function Home_View() {
     return (
         <div className='home_actions container'>
+            <br></br>
+            <p>你的資料不會被以任何形式瀏覽、傳播。所有輸入資料系統都會自動刪除</p>
             <section>
                 {render_action_comp('模擬問答', '輸入個案資料，選擇三個議題優先序，進行三階段模擬問答', '/talk_simulation', simulation_img)}
                 {/* {render_action_comp('單一理論個案概念化', '選擇一種理論，輸入個案資料後針對該理論所有向度進行分析，輸出個案分析報告與治療策略報告', '/single_concept_selection', case_study_img)} */}

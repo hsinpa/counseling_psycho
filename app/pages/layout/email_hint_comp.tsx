@@ -7,7 +7,7 @@ export const Email_Hint_Comp = function() {
     let copy_tag_ref = useRef<HTMLButtonElement | null>(null);
     const [modal_visibility, set_visibility] = useState(false);
     const [is_copy, set_copy] = useState(false);
-    const email = 'exiled1143@gmail.com';
+    const email = 'exiled1146@gmail.com';
     let modal_classname = 'modal';
 
     if (copy_tag_ref.current != null) {
